@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombie AI - Khóa học Lập trình Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #0a0a0a 0%, #2a1a2e 50%, #4a1a3e 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #ff6b9d;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background: #ff6b9d;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 100, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 20, 147, 0.3) 0%, transparent 50%);
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: #ff6b9d;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px #ff6b9d;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #ff6b9d; }
+            to { text-shadow: 0 0 30px #ff6b9d, 0 0 40px #ff6b9d; }
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            color: #ff6b9d;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section h2:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #ff6b9d;
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Activity Cards */
+        .activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .activity-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 107, 157, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .activity-card:hover:before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 157, 0.3);
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .activity-number {
+            background: #ff6b9d;
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .activity-card h3 {
+            color: #fff;
+            font-size: 1.3rem;
+        }
+
+        .activity-time {
+            color: #ff6b9d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .activity-card p, .activity-card ul {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .activity-card ul {
+            padding-left: 1.5rem;
+        }
+
+        .activity-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-item:hover {
+            transform: scale(1.05);
+            border-color: #ff6b9d;
+        }
+
+        .tech-item h4 {
+            color: #ff6b9d;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .tech-item p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Features */
+        .features {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .features h3 {
+            color: #ff6b9d;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            padding: 0.5rem;
+        }
+
+        .feature-item:before {
+            content: '⚡';
+            color: #ff6b9d;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Chat Bot Simulation */
+        .chatbot-demo {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            border: 1px solid #ff6b9d;
+        }
+
+        .chatbot-demo h3 {
+            color: #ff6b9d;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chat-window {
+            background: #000;
+            border-radius: 10px;
+            padding: 1rem;
+            min-height: 200px;
+            border: 1px solid #333;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #ff6b9d;
+            color: #000;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        .chat-input button {
+            padding: 0.5rem 1.5rem;
+            background: #ff6b9d;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: #e55a8a;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            text-align: center;
+            color: #ccc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .activities {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-stack {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#intro">Giới thiệu</a></li>
+            <li><a href="#activities">Hoạt động</a></li>
+            <li><a href="#tech">Công nghệ</a></li>
+            <li><a href="#demo">Demo</a></li>
+            <li><a href="#contact">Liên hệ</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="intro">
+        <div class="hero-content">
+            <h1>ZOMBIE AI</h1>
+            <p>Khóa học lập trình Web - Chống lại cuộc xâm lăng của AI Zombie</p>
+            <p>Học HTML, CSS, JavaScript qua dự án thực tế hấp dẫn</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="section" id="activities">
+        <h2>Hoạt động Học Tập</h2>
+        
+        <div class="activities">
+            <!-- Activity 1 -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">1</div>
+                    <h3>Làm quen giữa thầy và trò</h3>
+                </div>
+                <div class="activity-time">⏱️ Thời gian: 5 phút</div>
+                <p><strong>Mục tiêu:</strong> Xây dựng mối quan hệ thầy trò và tạo không khí học tập thoải mái.</p>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">Hoạt động:</h4>
+                <p><strong>Giới thiệu thầy và trò:</strong></p>
+                <ul>
+                    <li>Thầy giới thiệu bản thân, công việc, và lý do chọn môn học này</li>
+                    <li>Học viên cũng giới thiệu bản thân, bao gồm tên, trường học, sở thích cá nhân</li>
+                </ul>
+                
+                <p><strong>Ví dụ câu hỏi:</strong></p>
+                <ul>
+                    <li>"Em đã biết và tiếp xúc với những website nào?"</li>
+                    <li>"Em nghĩ rằng để tạo ra 1 trang web có khó không, sử dụng nhiều kiến thức không?"</li>
+                </ul>
+                
+                <p><strong>Câu hỏi khởi động về AI:</strong></p>
+                <ul>
+                    <li>"Em hiểu gì về trí tuệ nhân tạo (AI)?"</li>
+                    <li>"Em đã từng sử dụng AI trong học tập hoặc công việc chưa? Nếu có, hãy chia sẻ trải nghiệm đó."</li>
+                    <li>"Em nghĩ AI có thể thay thế con người trong những lĩnh vực nào?"</li>
+                    <li>"Theo em, điều gì khiến AI ngày càng được ứng dụng rộng rãi?"</li>
+                </ul>
+            </div>
+
+            <!-- Activity 2 -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">2</div>
+                    <h3>Giới thiệu về phần mềm Visual Studio Code</h3>
+                </div>
+                <div class="activity-time">⏱️ Thời gian: 10 phút</div>
+                <p><strong>Mục tiêu:</strong> Giới thiệu Visual Studio Code và HTML, CSS, JS.</p>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">Giới thiệu tổng quan về Visual Studio Code:</h4>
+                <p><strong>Định nghĩa:</strong> Là một công cụ lập trình được hỗ trợ bởi nhiều ngôn ngữ lập trình, trong đó có HTML, CSS, JavaScript. VS Code có thể giúp tạo ra ứng dụng, website, dựa trên ngôn ngữ lập trình phù hợp.</p>
+                
+                <p><strong>Các tính năng chính:</strong></p>
+                <ul>
+                    <li>Chạy trên nền tảng Windows và Mac</li>
+                    <li><strong>Gợi ý mã thông minh (IntelliSense):</strong> Tự động hoàn thành mã, hiển thị thông tin hàm</li>
+                    <li><strong>Gỡ lỗi (Debugging):</strong> Tích hợp công cụ gỡ lỗi ngay trong trình soạn thảo</li>
+                    <li><strong>Quản lý mã nguồn Git:</strong> Có thể commit, pull, push trực tiếp từ giao diện</li>
+                    <li><strong>Tiện ích mở rộng (Extensions):</strong> Có thể cài thêm công cụ hỗ trợ cho framework, ngôn ngữ hoặc style (ví dụ: Prettier, ESLint, C/C++ Extension...)</li>
+                </ul>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">Thực hành cơ bản:</h4>
+                <ul>
+                    <li>Mở VS Code, tạo các file liên quan</li>
+                    <li>Giải thích ý nghĩa chức năng của từng file</li>
+                </ul>
+            </div>
+
+            <!-- Activity 3 -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">3</div>
+                    <h3>Giới thiệu dự án với chủ đề Zombie AI</h3>
+                </div>
+                <div class="activity-time">⏱️ Thời gian: 10 phút (Chia làm 2 phần)</div>
+                <p><strong>Mục tiêu:</strong> Giới thiệu về dự án và cho học viên xác định nội dung, bố cục của trang web đó (Hoặc có thể sử dụng 1 trang web bất kì và phân tích).</p>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">Giới thiệu về dự án (5 phút):</h4>
+                <p><strong>Mô tả dự án:</strong> "Chống lại Zombie AI" là một trang web trình bày thông tin về một thế giới viễn tưởng nơi con người phải chống lại các zombie được điều khiển bởi trí tuệ nhân tạo.</p>
+                
+                <p><strong>Trang web gồm các mục:</strong></p>
+                <ul>
+                    <li>Giới thiệu chung về bối cảnh</li>
+                    <li>Cách zombie AI hoạt động</li>
+                    <li>Chiến lược đối phó</li>
+                    <li>Liên hệ và tương tác chatbot</li>
+                </ul>
+                
+                <p><strong>Các tính năng chính:</strong></p>
+                <ul>
+                    <li><strong>Navigation bar:</strong> cho phép chuyển đến từng phần của trang</li>
+                    <li><strong>Bố cục nhiều phần:</strong> Giới thiệu, AI, Chiến lược, Liên hệ</li>
+                    <li><strong>Hình ảnh và video:</strong> minh họa sinh động</li>
+                    <li><strong>Chatbot:</strong> tương tác giả lập với người truy cập</li>
+                </ul>
+                
+                <p><strong>Công nghệ sử dụng:</strong></p>
+                <ul>
+                    <li>HTML để tạo cấu trúc</li>
+                    <li>CSS để định dạng giao diện</li>
+                    <li>JavaScript để xử lý chatbot, nút, hiệu ứng...</li>
+                </ul>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">Trải nghiệm website (5 phút):</h4>
+                <p><strong>Hoạt động:</strong></p>
+                <ul>
+                    <li>Học viên mở file index.html trên trình duyệt</li>
+                    <li>Quan sát cấu trúc từng phần của trang web (navbar, header, section, footer...)</li>
+                    <li>Nhấn vào các nút để chuyển trang, tương tác chatbot</li>
+                </ul>
+                
+                <p><strong>Câu hỏi phản hồi:</strong></p>
+                <ul>
+                    <li>"Em có ấn tượng gì với bố cục trang web?"</li>
+                    <li>"Giao diện này dễ hiểu và dễ dùng không?"</li>
+                    <li>"Theo em, cần thêm hoặc bớt thành phần nào?"</li>
+                    <li>"Chatbot hoạt động thế nào? Có hữu ích không?"</li>
+                </ul>
+            </div>
+
+            <!-- Activity 4 -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">4</div>
+                    <h3>Hiểu cấu trúc HTML và CSS cơ bản</h3>
+                </div>
+                <div class="activity-time">⏱️ Thời gian: 25 phút</div>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">1. Phân tích cấu trúc trang HTML</h4>
+                <p><strong>Mục đích:</strong> Học viên nắm được cấu trúc một file HTML cơ bản và ý nghĩa của từng thành phần.</p>
+                
+                <p><strong>Chi tiết các bước thực hiện:</strong></p>
+                <ul>
+                    <li>Mở file index.html</li>
+                    <li><strong>Giải thích các thẻ chính:</strong>
+                        <ul style="margin-left: 1rem;">
+                            <li>&lt;!DOCTYPE html&gt;, &lt;html&gt;, &lt;head&gt;, &lt;body&gt;</li>
+                            <li>&lt;nav&gt;, &lt;div id="intro"&gt;, &lt;h1&gt;, &lt;a&gt;, &lt;img&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;footer&gt;...</li>
+                        </ul>
+                    </li>
+                    <li>Tìm hiểu cách liên kết tới CSS (&lt;link rel="stylesheet"&gt;) và JS (&lt;script&gt;)</li>
+                </ul>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">2. Xem và sửa CSS để thay đổi giao diện</h4>
+                <p><strong>Mục đích:</strong> Hiểu vai trò của CSS và biết cách thay đổi màu sắc, căn lề, font chữ...</p>
+                
+                <p><strong>Chi tiết các bước thực hiện:</strong></p>
+                <ul>
+                    <li>Mở file style.css</li>
+                    <li><strong>Chỉnh thử:</strong>
+                        <ul style="margin-left: 1rem;">
+                            <li>Màu nền của phần &lt;body&gt;</li>
+                            <li>Căn giữa đoạn tiêu đề &lt;h1&gt;</li>
+                            <li>Bo tròn ảnh bằng thuộc tính border-radius</li>
+                        </ul>
+                    </li>
+                    <li><strong>Gợi ý thuộc tính:</strong> color, background-color, text-align, font-size, margin, padding, width, height, font-weight,...</li>
+                </ul>
+            </div>
+
+            <!-- Activity 5 -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">5</div>
+                    <h3>Thêm tương tác bằng JavaScript</h3>
+                </div>
+                <div class="activity-time">⏱️ Thời gian: 10 phút</div>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">1. Hiểu cách chatbot hoạt động</h4>
+                <p><strong>Mục đích:</strong> Biết cách JavaScript thêm chức năng cho web.</p>
+                
+                <p><strong>Chi tiết các bước thực hiện:</strong></p>
+                <ul>
+                    <li><strong>Hướng dẫn thực hành gửi tin nhắn bằng nút:</strong>
+                        <ul style="margin-left: 1rem;">
+                            <li>Mở main.js</li>
+                            <li>Giải thích các phần:
+                                <ul style="margin-left: 1rem;">
+                                    <li>Gán sự kiện cho nút #chat-toggle-btn</li>
+                                    <li>Gửi và hiển thị tin nhắn trong #chat-box</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Hướng dẫn thực hành gửi tin nhắn bằng nút enter:</strong>
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 5px; margin: 0.5rem 0; font-family: monospace; color: #ccc;">
+                            userInput.addEventListener("keypress", function(event) {<br>
+                            &nbsp;&nbsp;if (event.key === "Enter") {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sendBtn.click();<br>
+                            &nbsp;&nbsp;}<br>
+                            });
+                        </div>
+                    </li>
+                    <li>Có thể hướng dẫn các bạn tạo API key thay vì lập trình bên trên</li>
+                </ul>
+            </div>
+
+            <!-- Activity 6 -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">6</div>
+                    <h3>Củng cố kiến thức và hỏi đáp</h3>
+                </div>
+                <div class="activity-time">⏱️ Thời gian: Linh hoạt</div>
+                <p><strong>Mục đích:</strong> Giúp học viên củng cố lại kiến thức đã học trong suốt quá trình lập trình, đồng thời giải đáp các thắc mắc của học viên, giúp họ nắm vững các khái niệm và kỹ năng đã được thực hành.</p>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">1. Tóm tắt kiến thức đã học:</h4>
+                <ul>
+                    <li>Cấu trúc cơ bản của một trang HTML</li>
+                    <li>Cách dùng CSS để chỉnh giao diện</li>
+                    <li>Cách JavaScript xử lý tương tác</li>
+                </ul>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">2. Câu hỏi mở để học viên thảo luận:</h4>
+                <ul>
+                    <li>"Em muốn thêm phần gì mới vào web này?"</li>
+                    <li>"Làm sao để cải tiến chatbot?"</li>
+                    <li>"Nếu là web bán hàng, em sẽ thiết kế bố cục thế nào?"</li>
+                    <li>"Cách nào để làm cho câu hỏi trong game đa dạng hơn và thú vị hơn đối với người chơi?"</li>
+                </ul>
+                
+                <h4 style="color: #ff6b9d; margin: 1rem 0 0.5rem 0;">3. Kết thúc và tổng kết</h4>
+                <p>Định hướng học tập tiếp theo và khuyến khích học viên thực hành thêm ở nhà.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="section" id="tech">
+        <h2>Công nghệ sử dụng</h2>
+        <div class="tech-stack">
+            <div class="tech-item">
+                <h4>HTML</h4>
+                <p>Tạo cấu trúc trang web</p>
+            </div>
+            <div class="tech-item">
+                <h4>CSS</h4>
+                <p>Định dạng giao diện</p>
+            </div>
+            <div class="tech-item">
+                <h4>JavaScript</h4>
+                <p>Xử lý tương tác và chatbot</p>
+            </div>
+            <div class="tech-item">
+                <h4>VS Code</h4>
+                <p>Môi trường phát triển</p>
+            </div>
+            <div class="tech-item">
+                <h4>Sản phẩm mẫu</h4>
+                <p>https://drive.google.com/drive/folders/1qqi3xmNzTiE2dWYbNVr4O20Vkuf4GAe1?usp=sharing</p>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>Tính năng Website</h3>
+            <div class="feature-list">
+                <div class="feature-item">Navigation Bar responsive</div>
+                <div class="feature-item">Bố cục nhiều phần rõ ràng</div>
+                <div class="feature-item">Hình ảnh và video minh họa</div>
+                <div class="feature-item">Chatbot tương tác thông minh</div>
+                <div class="feature-item">Hiệu ứng và animation</div>
+                <div class="feature-item">Thiết kế mobile-friendly</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot Demo -->
+    <section class="section" id="demo">
+        <div class="chatbot-demo">
+            <h3>🤖 Demo Chatbot - Zombie AI</h3>
+            <div class="chat-window" id="chat-window">
+                <div class="chat-message bot-message">
+                    Xin chào! Tôi là AI Trung đẹp trai của khóa học Zombie AI. Tôi có thể giúp bạn hiểu về lập trình web và cách chống lại AI Zombie. Hãy hỏi tôi bất cứ điều gì!
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Nhập tin nhắn của bạn...">
+                <button onclick="sendMessage()">Gửi</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <h3 style="color: #ff6b9d; margin-bottom: 1rem;">Liên hệ</h3>
+        <p>Khóa học Lập trình Web - Zombie AI Project</p>
+        <p>Email: dothanhtrung3112@gmai.com | Điện thoại: 0858515811</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">© 2025 Zombie AI Course. Survival through Code.</p>
+    </footer>
+
+    <script>
+        // Chatbot functionality
+        const responses = [
+            "Để chống lại Zombie AI, bạn cần nắm vững HTML, CSS và JavaScript!",
+            "Zombie AI rất nguy hiểm khi chúng học được cách hack website. Hãy bảo vệ code của bạn!",
+            "Visual Studio Code là vũ khí mạnh nhất để chiến đấu với Zombie AI.",
+            "Chatbot này được tạo bằng JavaScript. Bạn cũng có thể tự tạo một con bot để chống lại zombie!",
+            "Bí quyết sinh tồn: Luôn backup code và không bao giờ tin tưởng AI 100%!",
+            "HTML là khung xương, CSS là da thịt, JavaScript là linh hồn của website.",
+            "Zombie AI sợ nhất những developer biết cách debugging hiệu quả!",
+            "Hãy học cách tối ưu hóa website để nó chạy nhanh hơn cả zombie!",
+            "Git là công cụ giúp bạn theo dõi mọi thay đổi, kể cả khi zombie hack vào!",
+            "Extensions trong VS Code như súng đạn - càng nhiều càng mạnh!"
+        ];
+
+        function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const chatWindow = document.getElementById('chat-window');
+            const message = userInput.value.trim();
+
+            if (message) {
+                // Add user message
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'chat-message user-message';
+                userMessageDiv.textContent = message;
+                chatWindow.appendChild(userMessageDiv);
+
+                // Add bot response
+                setTimeout(() => {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chat-message bot-message';
+                    botMessageDiv.textContent = responses[Math.floor(Math.random() * responses.length)];
+                    chatWindow.appendChild(botMessageDiv);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                }, 1000);
+
+                userInput.value = '';
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+        }
+
+        // Enter key support
+        document.getElementById('user-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Add scrolling effect to navbar
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                nav.style.background = 'rgba(0, 0, 0, 0.9)';
+            }
+        });
+    </script>
+</body>
+</html>

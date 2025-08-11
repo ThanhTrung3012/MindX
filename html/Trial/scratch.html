@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kịch Bản Trải Nghiệm Scratch - Robot Nổi Loạn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .lesson-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #4ecdc4;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "🎮";
+            font-size: 1.2em;
+        }
+
+        .objectives {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .objectives ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .objectives li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .objectives li::before {
+            content: "🎯";
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+
+        .storyline {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .storyline h4 {
+            color: #d63031;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .preparation {
+            background: linear-gradient(135deg, #d299c2, #fef9d7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .preparation h4 {
+            color: #6c5ce7;
+            margin-bottom: 15px;
+        }
+
+        .activity-step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 3px solid #00b894;
+            transition: all 0.3s ease;
+        }
+
+        .activity-step:hover {
+            background: #e8f4fd;
+            transform: translateX(5px);
+        }
+
+        .activity-step h4 {
+            color: #00b894;
+            margin-bottom: 10px;
+        }
+
+        .questions {
+            background: linear-gradient(135deg, #fdcbf1, #e6dee9);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .questions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .questions li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .questions li::before {
+            content: "❓";
+            position: absolute;
+            left: 0;
+        }
+
+        .coding-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .coding-section h4 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .command-block {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-section {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #ff6b6b;
+        }
+
+        .ai-section h4 {
+            color: #d63031;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #4ecdc4;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .robot-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .lesson-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .coding-section a {
+            color : white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .coding-section a:hover {
+            color: #d63031;
+        }
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="robot-icon">🤖</div>
+            <h1>KỊCH BẢN TRẢI NGHIỆM SCRATCH</h1>
+            <h2>Robot Nổi Loạn!</h2>
+        </div>
+
+        <div class="lesson-info fade-in">
+            <div class="info-card">
+                <h3>📚 Bộ môn</h3>
+                <p>Coding</p>
+            </div>
+            <div class="info-card">
+                <h3>🎯 Năm môn</h3>
+                <p>Scratch Creator - Trial</p>
+            </div>
+            <div class="info-card">
+                <h3>👶 Độ tuổi</h3>
+                <p>8 - 10 tuổi</p>
+            </div>
+            <div class="info-card">
+                <h3>⏱️ Thời lượng</h3>
+                <p>60 phút</p>
+            </div>
+        </div>
+
+        <div class="section fade-in">
+            <h2 class="section-title">Mục tiêu bài học</h2>
+            <div class="objectives">
+                <ul>
+                    <li>Hiểu cách máy tính nhận biết hành động của con người (như giơ tay)</li>
+                    <li>Làm quen với AI cơ bản qua công cụ Teachable Machine</li>
+                    <li>Rèn luyện phản xạ, tư duy nhanh và lập trình dự án "Robot Nổi Loạn!"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section fade-in">
+            <h2 class="section-title">Chuẩn bị</h2>
+            <div class="preparation">
+                <h4>🖥️ Thiết bị giảng dạy:</h4>
+                <p>Laptop/Máy tính, Webcam</p>
+                
+                <h4>🌐 Nền tảng Raise:</h4>
+                <p>Chuẩn bị 2 cửa sổ trình duyệt:</p>
+                <ul>
+                    <li><strong>Cửa sổ 1:</strong> Mở dự án "Robot Nổi Loạn!"</li>
+                    <li><strong>Cửa sổ 2:</strong> Mở dự án rỗng (có nhân vật, không thẻ lệnh)</li>
+                </ul>
+                
+                <h4>🎮 Tài nguyên:</h4>
+                <p>Sản phẩm game mẫu đã training model hoàn chỉnh và có thể chơi được</p>
+            </div>
+        </div>
+
+        <div class="section fade-in">
+            <h2 class="section-title">Câu chuyện dẫn nhập</h2>
+            <div class="storyline">
+                <h4>🌟 Storyline:</h4>
+                <p>Trong tương lai, loài người đã tạo ra một đội quân robot thông minh để xây dựng và bảo vệ thế giới. Những robot này có thể làm được mọi việc – từ lau nhà, trồng cây, cho đến lái phi thuyền!</p>
+                
+                <p>Nhưng rồi… một sự cố xảy ra. Một lỗi hệ thống kỳ lạ lan truyền giữa các robot, khiến nhiều robot bị lỗi và trở nên nguy hiểm.</p>
+                
+                <p>🤖 Một số robot bắt đầu tấn công mọi thứ xung quanh, kể cả con người.</p>
+                
+                <p>Giữa tình thế nguy cấp, bạn – một kỹ sư nhí dũng cảnh – X-Hero đã tìm ra cách để robot nhận ra bạn không phải là kẻ địch.</p>
+            </div>
+        </div>
+
+        <div class="section fade-in">
+            <h2 class="section-title">Hoạt động dạy và học</h2>
+            
+            <div class="activity-step">
+                <h4>👋 Làm quen với học sinh</h4>
+                <div class="questions">
+                    <p><strong>Thông tin cần giới thiệu:</strong></p>
+                    <ul>
+                        <li>Họ và tên</li>
+                        <li>Trường đang theo học</li>
+                        <li>Sở thích</li>
+                    </ul>
+                    
+                    <p><strong>Câu hỏi gợi mở:</strong></p>
+                    <ul>
+                        <li>Ở trường, em học giỏi nhất là môn gì?</li>
+                        <li>Vào thời gian rỗi, em thích làm gì nhất?</li>
+                        <li>Ở nhà em có được chơi game không? Em thích chơi game gì nhất?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="activity-step">
+                <h4>🤖 Giới thiệu về AI và Robot</h4>
+                <div class="questions">
+                    <p><strong>Câu hỏi dẫn dắt:</strong></p>
+                    <ul>
+                        <li>Em hiểu thế nào về AI?</li>
+                        <li>Em có biết tác dụng của AI trong cuộc sống?</li>
+                        <li>Em đã sử dụng AI bao giờ chưa?</li>
+                        <li>Em nghĩ AI sẽ giúp ích gì trong tương lai?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="activity-step">
+                <h4>🎮 Giới thiệu sản phẩm mẫu Scratch</h4>
+                <p>Giáo viên giới thiệu sản phẩm mẫu trên Scratch – một dự án lập trình tích hợp công nghệ AI</p>
+                <div class="questions">
+                    <p><strong>Câu hỏi trong quá trình chơi thử:</strong></p>
+                    <ul>
+                        <li>Em đã nghe qua hay học qua Scratch chưa?</li>
+                        <li>Em đã học được gì với Scratch?</li>
+                        <li>Em thấy phần nhận diện hình ảnh bằng AI trong sản phẩm thế nào?</li>
+                        <li>Em có muốn tự mình training một model AI không?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section fade-in">
+            <h2 class="section-title">Lập trình thực hành</h2>
+            
+            <div class="coding-section">
+                <h4>🕹️ Lập trình nhân vật X-Hero</h4>
+                <p><strong>Câu hỏi dẫn nhập:</strong> "Trong dự án mà em vừa trải nghiệm, em điều khiển nhân vật X-Hero như thế nào?"</p>
+                
+                <div class="command-block">
+                    &lt;key pressed&gt; - Thẻ lệnh nhận biết phím bấm
+                </div>
+                <div class="command-block">
+                    &lt;move steps&gt; - Di chuyển nhân vật
+                </div>
+                <div class="command-block">
+                    &lt;point in direction&gt; - Xoay hướng nhân vật
+                </div>
+                <div class="command-block">
+                    &lt;Forever&gt; - Lặp vô hạn
+                </div>
+            </div>
+
+            <div class="coding-section">
+                <h4>🤖 Lập trình nhân vật Robot</h4>
+                <p><strong>Câu hỏi:</strong> Cách nhân vật Robot di chuyển ở trò chơi mẫu như thế nào?</p>
+                
+                <div class="command-block">
+                    &lt;Go to random position&gt; - Di chuyển đến vị trí ngẫu nhiên
+                </div>
+                <div class="command-block">
+                    &lt;point towards&gt; - Hướng về phía mục tiêu
+                </div>
+            </div>
+
+            <div class="coding-section">
+                <h4>💥 Lập trình va chạm</h4>
+                <div class="command-block">
+                    &lt;hide&gt; và &lt;show&gt; - Ẩn và hiện nhân vật
+                </div>
+                <p><strong>Logic:</strong> Khi Robot chạm X-Hero → Robot bị ẩn → đợi 1 giây → di chuyển đến vị trí ngẫu nhiên → hiện lại</p>
+            </div>
+
+            <div class="coding-section">
+                <h4>🎯 Lập trình bắn đạn</h4>
+                <div class="command-block">
+                    &lt;create clone of&gt; - Tạo bản sao nhân vật
+                </div>
+                <div class="command-block">
+                    &lt;When I start as a clone&gt; - Khi bắt đầu là bản sao
+                </div>
+                <p><strong>Logic:</strong> Nhấn phím space → phát tín hiệu "bắn đạn" → tạo bản sao đạn → đạn di chuyển theo hướng X-Hero</p>
+            </div>
+
+            <div class="coding-section">
+                <h4>🧳 Sản phẩm mẫu </h4>
+                <a href="https://scratch.mit.edu/projects/1189562125/editor/">Sản phẩm chơi thử</a>
+                <a href="https://scratch.mit.edu/projects/1189530351/editor">Sản phẩm cần hoàn thành</a>
+            </div>
+        </div>
+
+        <div class="section fade-in">
+            <h2 class="section-title">Training AI Model (Nâng cao)</h2>
+            <div class="ai-section">
+                <h4>🧠 Teachable Machine</h4>
+                <p>Giới thiệu về cách hoạt động của model AI để nhận diện bằng camera máy tính khi giơ tay lên sẽ mở khiên chắn và tiêu diệt kẻ địch xung quanh.</p>
+                
+                <div class="activity-step">
+                    <h4><span class="step-number">1</span>Tìm hiểu Teachable Machine</h4>
+                    <p>Teachable Machine sẽ nhận các hình ảnh theo phân loại vào các nhóm tương ứng trong quá trình huấn luyện.</p>
+                </div>
+                
+                <div class="activity-step">
+                    <h4><span class="step-number">2</span>Chuẩn bị Dataset</h4>
+                    <ul>
+                        <li><strong>Class 1:</strong> Trạng thái không bật khiên (tay xuống)</li>
+                        <li><strong>Class 2:</strong> Trạng thái xuất hiện khiên chắn (giơ tay trái lên)</li>
+                    </ul>
+                </div>
+                
+                <div class="activity-step">
+                    <h4><span class="step-number">3</span>Train và Export Model</h4>
+                    <p>Nhấn "Train Model" → chờ hoàn tất → kiểm tra độ chính xác → "Export Model" → "Upload my model" → sao chép link</p>
+                </div>
+                
+                <div class="coding-section">
+                    <h4>🔧 Thêm Extension vào Scratch</h4>
+                    <div class="command-block">
+                        &lt;use model ()&gt; - Kích hoạt model AI từ Teachable Machine
+                    </div>
+                    <div class="command-block">
+                        &lt;turn video ()&gt; - Tắt/mở/lật ngược video từ camera
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animation for fade-in elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

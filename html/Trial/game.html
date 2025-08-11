@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Bài Học GameMaker - Zombie AI Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+
+        .activity {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .activity:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(31, 38, 135, 0.5);
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .activity-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .activity-title {
+            flex: 1;
+        }
+
+        .activity-title h2 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .time-duration {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .objective {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .objective h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .section h4 {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin: 15px 0 8px 0;
+        }
+
+        .content {
+            padding-left: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li:before {
+            content: "→";
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .example-questions {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .example-questions h4 {
+            color: #28a745;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        .steps {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .steps h4 {
+            color: #856404;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #ffeaa7, #fab1a0);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .activity {
+                padding: 20px;
+            }
+            
+            .activity-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .activity-number {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .scroll-to-top:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Kế Hoạch Bài Học GameMaker</h1>
+            <p class="subtitle">Phát triển Game Zombie AI - Từ Cơ Bản Đến Nâng Cao</p>
+        </header>
+
+        <!-- Hoạt động 1 -->
+        <div class="activity">
+            <div class="activity-header">
+                <div class="activity-number">1</div>
+                <div class="activity-title">
+                    <h2>Làm Quen Giữa Thầy và Trò</h2>
+                </div>
+                <div class="time-duration">5 phút</div>
+            </div>
+            
+            <div class="objective">
+                <h3>🎯 Mục tiêu:</h3>
+                <p>Xây dựng mối quan hệ thầy trò và tạo không khí học tập thoải mái.</p>
+            </div>
+
+            <div class="section">
+                <h3>📝 Hoạt động:</h3>
+                <div class="content">
+                    <h4>Giới thiệu thầy và trò:</h4>
+                    <ul>
+                        <li>Thầy giới thiệu bản thân, công việc, và lý do chọn môn học này</li>
+                        <li>Học viên giới thiệu bản thân, bao gồm tên, trường học, sở thích cá nhân</li>
+                    </ul>
+                    
+                    <div class="example-questions">
+                        <h4>💬 Câu hỏi khởi động:</h4>
+                        <ul>
+                            <li>"Em thích chơi game nào nhất?"</li>
+                            <li>"Có khi nào em thử tạo game chưa? Em có thích làm game không?"</li>
+                            <li>"Em thích thể loại game nào? Tại sao lại thích?"</li>
+                            <li>"Em đã thử tự tạo game chưa? Nếu có, em đã sử dụng công cụ gì?"</li>
+                            <li>"Em nghĩ game có thể giúp ích gì trong học tập?"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hoạt động 2 -->
+        <div class="activity">
+            <div class="activity-header">
+                <div class="activity-number">2</div>
+                <div class="activity-title">
+                    <h2>Giới Thiệu GameMaker và Giao Diện</h2>
+                </div>
+                <div class="time-duration">10 phút</div>
+            </div>
+            
+            <div class="objective">
+                <h3>🎯 Mục tiêu:</h3>
+                <p>Giới thiệu GameMaker và các công cụ cơ bản trong phần mềm này.</p>
+            </div>
+
+            <div class="section">
+                <h3>📝 Hoạt động:</h3>
+                <div class="content">
+                    <h4>Giới thiệu tổng quan về GameMaker:</h4>
+                    <ul>
+                        <li>Là một công cụ phát triển game 2D <span class="highlight">mạnh mẽ nhưng dễ sử dụng</span></li>
+                        <li>Thích hợp cho người mới bắt đầu và người học lập trình game cơ bản</li>
+                        <li>Chạy trên nền tảng Windows và Mac</li>
+                        <li>Hỗ trợ phát triển game cho nhiều hệ điều hành và nền tảng</li>
+                    </ul>
+                    
+                    <h4>Trình chiếu video demo:</h4>
+                    <ul>
+                        <li>Chiếu video ngắn mô tả về GameMaker</li>
+                        <li>Giới thiệu các dự án game cơ bản đã được tạo ra</li>
+                        <li>Hướng dẫn nhanh về giao diện GameMaker</li>
+                    </ul>
+                    
+                    <div class="steps">
+                        <h4>🔧 Thực hành cơ bản:</h4>
+                        <ul>
+                            <li>Mở GameMaker, tạo dự án mới</li>
+                            <li>Khám phá cửa sổ làm việc chính</li>
+                            <li>Tìm hiểu phần mềm Code (GML - GameMaker Language)</li>
+                            <li>Làm quen với các tab trong giao diện</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-questions">
+                        <h4>💬 Câu hỏi cho học viên:</h4>
+                        <p>"Em có thấy giao diện GameMaker dễ sử dụng không? Các công cụ trong phần mềm có dễ hiểu không?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hoạt động 3 -->
+        <div class="activity">
+            <div class="activity-header">
+                <div class="activity-number">3</div>
+                <div class="activity-title">
+                    <h2>Giới Thiệu Dự Án Zombie AI</h2>
+                </div>
+                <div class="time-duration">10 phút</div>
+            </div>
+            
+            <div class="objective">
+                <h3>🎯 Mục tiêu:</h3>
+                <p>Giới thiệu về dự án Zombie AI và cho học viên chơi thử game để hiểu cách game hoạt động.</p>
+            </div>
+
+            <div class="section">
+                <h3>📝 Hoạt động:</h3>
+                <div class="content">
+                    <h4>Giới thiệu về dự án Zombie AI (5 phút):</h4>
+                    <ul>
+                        <li><span class="highlight">Zombie AI</span> là một game 2D trong đó người chơi phải tránh các zombie điều khiển bởi AI và bắn chúng</li>
+                        <li>Các tính năng chính: Di chuyển nhân vật chính (player), bắn đạn, AI của zombie</li>
+                        <li>Các hiệu ứng đặc biệt (như thay đổi độ khó khi zombie đến gần)</li>
+                        <li>AI của zombie sẽ tự động di chuyển theo một hướng và tấn công khi ở gần người chơi</li>
+                    </ul>
+                    
+                    <h4>Chơi thử game (5 phút):</h4>
+                    <ul>
+                        <li>Học viên sẽ chơi thử game Zombie AI</li>
+                        <li>Hiểu cơ chế di chuyển và chiến đấu</li>
+                        <li>Trải nghiệm gameplay cơ bản</li>
+                    </ul>
+
+                    <div class="example-questions">
+                        <h4>💬 Câu hỏi phản hồi:</h4>
+                        <ul>
+                            <li>"Em cảm thấy thế nào khi chơi game?"</li>
+                            <li>"Có thể cải thiện gì để game trở nên thú vị hơn?"</li>
+                            <li>"Em có thấy AI của zombie hoạt động hợp lý không?"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hoạt động 4 -->
+        <div class="activity">
+            <div class="activity-header">
+                <div class="activity-number">4</div>
+                <div class="activity-title">
+                    <h2>Lập Trình Nhân Vật Player và Viên Đạn</h2>
+                </div>
+                <div class="time-duration">25 phút</div>
+            </div>
+            
+            <div class="objective">
+                <h3>🎯 Mục tiêu:</h3>
+                <p>Học cách lập trình di chuyển nhân vật và tạo hệ thống bắn đạn theo hướng con trỏ chuột.</p>
+            </div>
+
+            <div class="section">
+                <h3>🎮 1. Lập trình di chuyển nhân vật Player</h3>
+                <div class="content">
+                    <div class="steps">
+                        <h4>🔧 Chi tiết các bước thực hiện:</h4>
+                        <ul>
+                            <li><strong>Di chuyển nhân vật:</strong> Sử dụng phím WASD hoặc mũi tên để di chuyển</li>
+                            <li><strong>Xoay theo chuột:</strong> Nhân vật luôn quay về hướng con trỏ chuột</li>
+                            <li><strong>Điều chỉnh tốc độ:</strong> Sử dụng hàm <span class="highlight">set speed</span></li>
+                            <li><strong>Tính hướng:</strong> Sử dụng <span class="highlight">point_direction(x, y, mouse_x, mouse_y)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>💥 2. Lập trình viên đạn</h3>
+                <div class="content">
+                    <div class="steps">
+                        <h4>🔧 Chi tiết các bước thực hiện:</h4>
+                        <ul>
+                            <li><strong>Tạo viên đạn:</strong> Khi nhấn phím Space, tạo viên đạn tại vị trí player</li>
+                            <li><strong>Hướng bay:</strong> Viên đạn bay về phía con trỏ chuột</li>
+                            <li><strong>Điều chỉnh tốc độ:</strong> Sử dụng <span class="highlight">set speed</span> cho viên đạn</li>
+                            <li><strong>Xử lý va chạm:</strong> Lập trình va chạm với zombie và các vật cản</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hoạt động 5 -->
+        <div class="activity">
+            <div class="activity-header">
+                <div class="activity-number">5</div>
+                <div class="activity-title">
+                    <h2>Lập Trình UI và DialogBox</h2>
+                </div>
+                <div class="time-duration">10 phút</div>
+            </div>
+            
+            <div class="objective">
+                <h3>🎯 Mục tiêu:</h3>
+                <p>Tạo giao diện người dùng để hiển thị câu hỏi và cho phép người chơi lựa chọn đáp án.</p>
+            </div>
+
+            <div class="section">
+                <h3>🎨 1. Tạo đối tượng obj_question_ui</h3>
+                <div class="content">
+                    <div class="steps">
+                        <h4>🔧 Các bước thực hiện:</h4>
+                        <ul>
+                            <li>Tạo đối tượng mới có tên <span class="highlight">obj_question_ui</span></li>
+                            <li>Tạo sprite cho DialogBox với viền và nền sáng</li>
+                            <li>Vẽ DialogBox chứa câu hỏi và lựa chọn</li>
+                            <li>Hiển thị các tùy chọn: Phím 1, 2, 3 cho các đáp án khác nhau</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>⌨️ 2. Lập trình lựa chọn bằng phím 1, 2, 3</h3>
+                <div class="content">
+                    <div class="steps">
+                        <h4>🔧 Chức năng các phím:</h4>
+                        <ul>
+                            <li><strong>Phím 1:</strong> "Có, tôi muốn tiếp tục"</li>
+                            <li><strong>Phím 2:</strong> "Không, tôi muốn quay lại"</li>
+                            <li><strong>Phím 3:</strong> "Tùy chọn khác"</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-questions">
+                        <h4>🔄 Tùy chỉnh nội dung:</h4>
+                        <ul>
+                            <li>Nội dung DialogBox thay đổi theo tiến độ game</li>
+                            <li>Câu hỏi động tùy theo hành động người chơi</li>
+                            <li>Tùy chọn hiển thị hướng dẫn và trợ giúp</li>
+                        </ul>
+                    </div>
+
+                     <div class="example-questions">
+                        <h4>🎮 Sản phẩm :</h4>
+                        <ul>
+                            <li>Sản phẩm mẫu : https://drive.google.com/drive/folders/1WQA6_NWzKnYPZVl6npMut-yyZemC_t--?usp=sharing </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hoạt động 6 -->
+        <div class="activity">
+            <div class="activity-header">
+                <div class="activity-number">6</div>
+                <div class="activity-title">
+                    <h2>Củng Cố Kiến Thức và Hỏi Đáp</h2>
+                </div>
+                <div class="time-duration">15 phút</div>
+            </div>
+            
+            <div class="objective">
+                <h3>🎯 Mục tiêu:</h3>
+                <p>Củng cố kiến thức đã học, giải đáp thắc mắc và thảo luận về cải tiến game.</p>
+            </div>
+
+            <div class="section">
+                <h3>📚 1. Củng cố các khái niệm đã học</h3>
+                <div class="content">
+                    <ul>
+                        <li>Lập trình logic trong game (di chuyển, bắn đạn, AI)</li>
+                        <li>Các tính năng của GameMaker đã sử dụng</li>
+                        <li>Lý thuyết về xử lý sự kiện và đối tượng</li>
+                        <li>Các lệnh quan trọng: <span class="highlight">set direction, set speed, instance_create</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>💭 2. Câu hỏi mở cho thảo luận</h3>
+                <div class="content">
+                    <div class="example-questions">
+                        <h4>💬 Các câu hỏi thảo luận:</h4>
+                        <ul>
+                            <li>"Bạn có gặp khó khăn gì khi lập trình cho nhân vật hoặc viên đạn?"</li>
+                            <li>"Bạn có thể nghĩ ra cách khác để thay đổi cách di chuyển của nhân vật?"</li>
+                            <li>"Làm sao để thêm nhiều câu hỏi khác nhau vào game?"</li>
+                            <li>"Với những gì đã học, bạn có ý tưởng phát triển game không?"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>🚀 3. Thảo luận về cải tiến game</h3>
+                <div class="content">
+                    <div class="steps">
+                        <h4>💡 Ý tưởng cải tiến:</h4>
+                        <ul>
+                            <li>Thêm các loại quái vật khác ngoài zombie</li>
+                            <li>Tạo câu hỏi đa dạng và thú vị hơn</li>
+                            <li>Cải thiện giao diện và hiệu ứng visual</li>
+                            <li>Thêm hệ thống điểm số và level</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>📝 4. Kết thúc và tổng kết</h3>
+                <div class="content">
+                    <ul>
+                        <li>Tổng kết các điểm chính đã học</li>
+                        <li>Nhấn mạnh tầm quan trọng của kỹ năng lập trình cơ bản</li>
+                        <li>Khuyến khích áp dụng vào game development</li>
+                        <li>Hướng dẫn học tập tiếp theo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="scroll-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.scroll-to-top');
+            if (window.pageYOffset > 300) {
+                button.style.display = 'block';
+            } else {
+                button.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

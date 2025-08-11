@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trial Robotics - Nhập môn Robot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .course-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+        }
+
+        /* Main Content */
+        main {
+            background: #fff;
+            margin: 2rem 0;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            padding: 3rem 2rem;
+        }
+
+        .section:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #667eea;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* Storyline */
+        .storyline {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .storyline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1.5" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        .storyline h2 {
+            color: #ffd700;
+        }
+
+        .story-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .characters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .character {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .character h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .dialogue {
+            background: rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #ffd700;
+        }
+
+        /* Learning Objectives */
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .objective-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .objective-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .objective-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .objective-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .objective-card li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .objective-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Activities */
+        .activities {
+            background: #f8f9fa;
+        }
+
+        .activity {
+            background: #fff;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .activity h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .activity-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .time-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* VEX GO Kit */
+        .kit-components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .component {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .component:hover {
+            transform: translateY(-3px);
+        }
+
+        .component-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .component h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Programming Levels */
+        .level {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .level h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .level-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .activity-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🤖 TRIAL ROBOTICS</div>
+                <nav class="nav">
+                    <a href="#story">Câu chuyện</a>
+                    <a href="#objectives">Mục tiêu</a>
+                    <a href="#activities">Hoạt động</a>
+                    <a href="#contact">Liên hệ</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>TRIAL ROBOTICS</h1>
+            <p>Khám phá thế giới Robot cùng VEX GO - Cuộc phiêu lưu khoa học viễn tưởng đầy thú vị!</p>
+            
+            <div class="course-info">
+                <div class="info-card">
+                    <h3>📚 Bộ môn</h3>
+                    <p>Robotics & Engineering</p>
+                </div>
+                <div class="info-card">
+                    <h3>🎯 Khóa học</h3>
+                    <p>Nhập môn Robot – Trial</p>
+                </div>
+                <div class="info-card">
+                    <h3>👦 Độ tuổi</h3>
+                    <p>6+ tuổi</p>
+                </div>
+                <div class="info-card">
+                    <h3>⏰ Thời lượng</h3>
+                    <p>60 phút</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="story" class="section storyline">
+            <div class="story-content">
+                <h2>🌆 ROBOT GIẢI CỨU THÀNH PHỐ</h2>
+                
+                <div class="dialogue">
+                    <h3>🚨 Bối cảnh khủng hoảng</h3>
+                    <p>Thành phố đang rơi vào hỗn loạn vì <strong>Z-BRAIN</strong> – một siêu trí tuệ nhân tạo điều khiển toàn bộ hệ thống robot – đã bị nhiễm mã độc. Hệ quả là tất cả robot trong thành phố biến thành <strong>Zombie AI</strong>, gây nguy hiểm cho người dân.</p>
+                </div>
+
+                <div class="characters">
+                    <div class="character">
+                        <h3>👩‍💻 Lily - Lập trình viên thiên tài</h3>
+                        <p>Phụ trách lập trình trí tuệ nhân tạo và dẫn đường từ xa. Chuyên gia về thuật toán và điều khiển robot thông minh.</p>
+                    </div>
+                    <div class="character">
+                        <h3>👨‍🔧 Max - Kỹ sư thiết kế</h3>
+                        <p>Phụ trách thiết kế robot giải cứu. Bậc thầy về cơ khí và lắp ráp các thiết bị robot phức tạp.</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <h3>🎯 Nhiệm vụ</h3>
+                    <p>Cả hai phải hợp tác để chế tạo một <strong>robot giải cứu đặc biệt</strong>, vượt qua nhiều khu vực nguy hiểm, thu thập thuốc giải và tiêu diệt các Zombie AI, nhằm giải cứu thành phố.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="objectives" class="section">
+            <h2>🎯 MỤC TIÊU BÀI HỌC</h2>
+            <div class="objectives">
+                <div class="objective-card">
+                    <h3>📚 KIẾN THỨC</h3>
+                    <p><em>(Nhớ & Hiểu)</em></p>
+                    <ul>
+                        <li>Nhận biết các thành phần cơ bản của robot</li>
+                        <li>Hiểu robot là công cụ thực hiện nhiệm vụ thực tế</li>
+                        <li>Nắm ý tưởng robot có thể điều khiển thủ công/tự động</li>
+                    </ul>
+                </div>
+                <div class="objective-card">
+                    <h3>🛠️ KỸ NĂNG</h3>
+                    <p><em>(Vận dụng & Phân tích)</em></p>
+                    <ul>
+                        <li>Thao tác lắp ráp robot cơ bản với kit VEX GO</li>
+                        <li>Thao tác kéo thả câu lệnh cơ bản</li>
+                        <li>Tư duy cấu trúc tuần tự trong lập trình</li>
+                    </ul>
+                </div>
+                <div class="objective-card">
+                    <h3>💡 THÁI ĐỘ</h3>
+                    <p><em>(Đánh giá & Sáng tạo)</em></p>
+                    <ul>
+                        <li>Nhận thức vai trò robot trong cuộc sống</li>
+                        <li>Yêu thích môn học robotics</li>
+                        <li>Thái độ hợp tác với giáo viên</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🧰 BỘ KIT VEX GO</h2>
+            <div class="kit-components">
+                <div class="component">
+                    <div class="component-icon">🧠</div>
+                    <h4>Não Robot</h4>
+                    <p>Trung tâm điều khiển chính của robot</p>
+                </div>
+                <div class="component">
+                    <div class="component-icon">⚙️</div>
+                    <h4>Động cơ</h4>
+                    <p>Tạo chuyển động cho robot</p>
+                </div>
+                <div class="component">
+                    <div class="component-icon">🔋</div>
+                    <h4>Pin Robot</h4>
+                    <p>Cung cấp năng lượng</p>
+                </div>
+                <div class="component">
+                    <div class="component-icon">🧲</div>
+                    <h4>Nam châm điện</h4>
+                    <p>Tương tác với đối tượng</p>
+                </div>
+                <div class="component">
+                    <div class="component-icon">👁️</div>
+                    <h4>Cảm biến mắt</h4>
+                    <p>Phát hiện màu sắc</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="activities" class="section activities">
+            <h2>🚀 TIẾN TRÌNH HOẠT ĐỘNG</h2>
+            
+            <div class="activity">
+                <div class="activity-info">
+                    <h3>🤝 Hoạt động 1: Làm quen</h3>
+                    <span class="time-badge">2 phút</span>
+                </div>
+                <p>Giáo viên và học viên làm quen, trao đổi về sở thích lắp ráp robot và giới thiệu mục đích buổi trải nghiệm.</p>
+            </div>
+
+            <div class="activity">
+                <div class="activity-info">
+                    <h3>📖 Hoạt động 2: Câu chuyện "Robot giải cứu thành phố"</h3>
+                    <span class="time-badge">5 phút</span>
+                </div>
+                <p>Dẫn dắt học viên vào thế giới khoa học viễn tưởng, nhập vai các nhân vật chính và bắt đầu nhiệm vụ giải cứu.</p>
+            </div>
+
+            <div class="activity">
+                <div class="activity-info">
+                    <h3>🔧 Hoạt động 3: Giới thiệu bộ kit VEX GO</h3>
+                    <span class="time-badge">3 phút</span>
+                </div>
+                <p>Làm quen với các thành phần cơ bản: Não robot, động cơ, pin, cảm biến mắt, nam châm điện và nội quy sử dụng.</p>
+            </div>
+
+            <div class="activity">
+                <div class="activity-info">
+                    <h3>🛠️ Hoạt động 4: Thử tài lắp ráp</h3>
+                    <span class="time-badge">15-20 phút</span>
+                </div>
+                <p>Hướng dẫn đọc hướng dẫn lắp ráp, thực hành lắp ráp robot cơ bản theo mô hình với RED CONNECTORS.</p>
+                <a href="https://content.vexrobotics.com/vexgo/pdf/builds/code_base_2/Code_Base_2.0.pdf?v=2"> Link lắp ráp </a>
+            </div>
+
+            <div class="level">
+                <div class="level-content">
+                    <h3>💻 MỨC ĐỘ 1: KHỞI ĐỘNG HỆ THỐNG</h3>
+                    <div class="activity-info">
+                        <span class="time-badge">2 phút</span>
+                    </div>
+                    <p>Kết nối robot với VEXCODE GO, thiết lập cổng kết nối và khởi động hệ thống bằng các thẻ lệnh cơ bản.</p>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-content">
+                    <h3>🚗 MỨC ĐỘ 2: ĐIỀU KHIỂN ROBOT DI CHUYỂN</h3>
+                    <div class="activity-info">
+                        <span class="time-badge">10 phút</span>
+                    </div>
+                    <p>Sử dụng thẻ lệnh di chuyển, thử nghiệm với 100mm để nhận ra khoảng cách 1 ô trên sa bàn.</p>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-content">
+                    <h3>⚡ MỨC ĐỘ 3: NÂNG CẤP ROBOT, ĐÁNH BẠI ZOMBIE!</h3>
+                    <div class="activity-info">
+                        <span class="time-badge">8 phút</span>
+                    </div>
+                    <p>Lắp ráp LED BUMPER, kết nối Port 2, và sử dụng thẻ lệnh If-else với LED BUMPER pressed để tạo robot thông minh hơn.</p>
+                </div>
+            </div>
+
+            <div class="activity">
+                <div class="activity-info">
+                    <h3>📝 Hoạt động 6: Tổng kết</h3>
+                    <span class="time-badge">5 phút</span>
+                </div>
+                <p>Chia sẻ cảm nhận về buổi học, phần khó nhất, hoạt động yêu thích nhất và khuyến khích chia sẻ với gia đình.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Trial Robotics. Khám phá tương lai cùng công nghệ robot! 🤖</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and activities
+        document.querySelectorAll('.objective-card, .activity, .component, .level').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

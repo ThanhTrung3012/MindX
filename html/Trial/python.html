@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .question:hover::before {
+            left: 100%;
+        }
+
+        .question:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .question-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .option {
+            margin: 8px 0;
+            color: #34495e;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background: #ecf0f1;
+            transform: translateX(5px);
+            color: #2980b9;
+        }
+
+        .code-question {
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-left-color: #e74c3c;
+            font-family: 'Courier New', monospace;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e3f2fd;
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
+
+        .star-pattern {
+            background: #2c3e50;
+            color: #f39c12;
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .star-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(243, 156, 18, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .star-line {
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+
+        .star-line:hover {
+            transform: translateX(10px);
+            color: #f1c40f;
+        }
+
+        .input-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #34495e;
+            color: white;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KIỂM TRA PYTHON</h1>
+        </div>
+        
+        <div class="content">
+            <div class="question">
+                <div class="question-title">Câu 1 (1.0đ): Ngôn ngữ lập trình là gì?</div>
+                <div class="options">
+                    <div class="option">A. Ngôn ngữ khoa học</div>
+                    <div class="option">B. Ngôn ngữ tự nhiên</div>
+                    <div class="option">C. Ngôn ngữ giao tiếp</div>
+                    <div class="option">D. Ngôn ngữ để viết chương trình</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">Câu 2 (1.0đ): Câu lệnh in ra màn hình trong Python là</div>
+                <div class="options">
+                    <div class="option">A. pint()</div>
+                    <div class="option">B. print()</div>
+                    <div class="option">C. show()</div>
+                    <div class="option">D. output()</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">Câu 3 (1.0đ): Viết câu lệnh in ra màn hình dòng chữ: "Học lập trình với Python".</div>
+                <div class="input-section">
+                    <input type="text" placeholder="Nhập câu trả lời của bạn...">
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">Câu 4 (1.0đ): Để gán giá trị cho một biến, câu lệnh nào sau đây là đúng?</div>
+                <div class="options">
+                    <div class="option">A. size 35;</div>
+                    <div class="option">B. class := 7</div>
+                    <div class="option">C. age = 13</div>
+                    <div class="option">D. Tất cả đều đúng</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">Câu 5 (1.0đ): Viết câu lệnh khai báo biến name với giá trị là "John".</div>
+                <div class="input-section">
+                    <input type="text" placeholder="Nhập câu trả lời của bạn...">
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">Câu 6 (1.0đ): Viết cú pháp câu lệnh cho phép người dùng nhập giá trị từ bàn phím.</div>
+                <div class="input-section">
+                    <input type="text" placeholder="Nhập câu trả lời của bạn...">
+                </div>
+            </div>
+
+            <div class="question code-question">
+                <div class="question-title">Câu 7 (2.0đ): "Chương trình đăng ký tài khoản"</div>
+                <p>Viết chương trình yêu cầu người dùng nhập vào tên và mật khẩu. Sau đó hiển thị lên màn hình "Xin chào {N}". Với {N} là tên người dùng nhập từ bàn phím.</p>
+                <p><strong>Ví dụ mô tả:</strong></p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nhập</th>
+                                <th>Xuất</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tường Duy<br>twdii<br>pass123</td>
+                                <td>Xin chào Tường Duy</td>
+                            </tr>
+                            <tr>
+                                <td>Văn A<br>minmin<br>1234567</td>
+                                <td>Xin chào Văn A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="input-section">
+                    <textarea rows="8" placeholder="Viết code Python của bạn tại đây..."></textarea>
+                </div>
+            </div>
+
+            <div class="question code-question">
+                <div class="question-title">Câu 8 (2.0đ): Viết chương trình Python sử dụng ký tự * để vẽ tam giác dạng như sau:</div>
+                
+                <div class="star-pattern">
+                    <div class="star-line">*</div>
+                    <div class="star-line">* *</div>
+                    <div class="star-line">* * *</div>
+                    <div class="star-line">* * * *</div>
+                    <div class="star-line">* * * * *</div>
+                    <div class="star-line">* * * * * *</div>
+                    <div class="star-line">* * * * * * *</div>
+                    <div class="star-line">* * * * * * * *</div>
+                    <div class="star-line">* * * * * * * * *</div>
+                    <div class="star-line">* * * * * * * * * *</div>
+                    <div class="star-line">* * * * * * * * * * *</div>
+                    <div class="star-line">* * * * * * * * * * * *</div>
+                </div>
+                
+                <div class="input-section">
+                    <textarea rows="10" placeholder="Viết code Python của bạn tại đây..."></textarea>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="submit-btn" onclick="submitTest()">NỘP BÀI KIỂM TRA</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Chúc bạn làm bài tốt! 🐍 Python Programming Test
+        </div>
+    </div>
+
+    <script>
+        function submitTest() {
+            alert('Cảm ơn bạn đã hoàn thành bài kiểm tra!\nKết quả sẽ được thông báo sau.');
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effects for options
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove previous selections in the same question
+                    const question = this.closest('.question');
+                    const allOptions = question.querySelectorAll('.option');
+                    allOptions.forEach(opt => opt.style.background = '');
+                    
+                    // Highlight selected option
+                    this.style.background = 'linear-gradient(135deg, #74b9ff, #0984e3)';
+                    this.style.color = 'white';
+                });
+            });
+
+            // Add typing effect for inputs
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.style.borderLeft = '4px solid #00b894';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
