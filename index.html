@@ -154,6 +154,10 @@
                             <a href="/html/Trial/pre.html" class="btn btn-card">Pre+</a>
                             <a href="#" class="btn btn-card">4+</a>
                             <a href="#" class="btn btn-card">IQ</a>
+                            <button class="main-button" onclick="openModal()">
+                                🤖 Mục tiêu và kết quả
+                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -215,6 +219,129 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <button class="close-button" onclick="closeModal()">×</button>
+                <h1 style="color: white; font-size: 28px; margin: 0;">
+                    🤖 Chương trình học lập trình Robotics
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); margin-top: 10px; font-size: 16px;">
+                    Dành cho trẻ mẫu giáo & cấp 1
+                </p>
+            </div>
+
+            <div class="modal-body">
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="goal-icon">🎯</span>
+                        Mục tiêu học lập trình robotic cho mẫu giáo & cấp 1
+                    </h2>
+
+                    <ul class="goal-list">
+                        <li class="goal-item">
+                            <div class="goal-title">
+                                💻 Làm quen với công nghệ
+                            </div>
+                            <div class="goal-description">
+                                • Giúp trẻ nhận biết robot là gì, robot có thể làm gì trong đời
+                                sống.<br>
+                                • Hiểu cơ bản robot có thể "nghe lệnh" và "làm theo" qua lập
+                                trình trực quan (block code).
+                            </div>
+                        </li>
+
+                        <li class="goal-item">
+                            <div class="goal-title">
+                                🧠 Phát triển tư duy logic & sáng tạo
+                            </div>
+                            <div class="goal-description">
+                                • Làm quen với việc suy nghĩ theo trình tự: nếu… thì…, trước…
+                                sau…<br>
+                                • Biết thử sai và tìm cách giải quyết vấn đề.
+                            </div>
+                        </li>
+
+                        <li class="goal-item">
+                            <div class="goal-title">
+                                👥 Rèn kỹ năng mềm
+                            </div>
+                            <div class="goal-description">
+                                • Học cách làm việc nhóm khi lắp ráp và điều khiển robot.<br>
+                                • Tập giao tiếp, chia sẻ ý tưởng, hợp tác với bạn.
+                            </div>
+                        </li>
+
+                        <li class="goal-item">
+                            <div class="goal-title">
+                                🔬 Khơi gợi hứng thú học tập STEM
+                            </div>
+                            <div class="goal-description">
+                                • Kết nối kiến thức Toán – Khoa học – Tin học – Mỹ thuật thông
+                                qua hoạt động với robot.<br>
+                                • Tạo nền tảng yêu thích công nghệ từ sớm.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="goal-icon">✅</span>
+                        Kết quả đạt được
+                    </h2>
+
+                    <ul class="result-list">
+                        <li class="result-item">
+                            <div class="result-title">
+                                🔧 Kỹ năng cơ bản về robot
+                            </div>
+                            <div class="result-description">
+                                • Trẻ biết lắp ráp robot (Lego, robot kit).<br>
+                                • Biết kéo thả khối lệnh đơn giản để robot đi thẳng, rẽ trái,
+                                phát âm thanh, bật đèn...
+                            </div>
+                        </li>
+
+                        <li class="result-item">
+                            <div class="result-title">
+                                🎯 Tư duy logic ban đầu
+                            </div>
+                            <div class="result-description">
+                                • Biết sắp xếp thứ tự các bước để robot làm đúng.<br>
+                                • Hiểu khái niệm cơ bản về nguyên nhân – kết quả ("Nếu nhấn nút
+                                thì robot đi", "Nếu gặp vật cản thì dừng").
+                            </div>
+                        </li>
+
+                        <li class="result-item">
+                            <div class="result-title">
+                                🌟 Phát triển sáng tạo & tự tin
+                            </div>
+                            <div class="result-description">
+                                • Trẻ có thể sáng tạo sản phẩm robot của riêng mình.<br>
+                                • Tự tin thuyết trình về <span class="highlight">"robot của em
+                                    làm gì"</span>.
+                            </div>
+                        </li>
+
+                        <li class="result-item">
+                            <div class="result-title">
+                                📚 Hình thành kỹ năng học tập hiện đại
+                            </div>
+                            <div class="result-description">
+                                • Rèn tính kiên nhẫn, thử lại khi robot chưa chạy đúng.<br>
+                                • Học cách hợp tác, chia vai trò trong nhóm (người lắp – người
+                                lập trình – người thử).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Features Section -->
     <section class="features">
@@ -319,6 +446,24 @@
                 navbar.style.background = 'rgba(255, 255, 255, 0.98)';
             } else {
                 navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Modal functionality
+        function openModal() {
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
             }
         });
     </script>
