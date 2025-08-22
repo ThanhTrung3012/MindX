@@ -2,21 +2,157 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Học liệu - MindX</title>
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="icon" type="image/png" href="/img/icon.webp">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="icon" type="image/png" href="/img/icon.webp" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Thêm CSS cho avatar hình tròn và nhỏ lại -->
+    <style>
+        .login-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            margin: 0 auto 16px auto;
+            display: block;
+        }
+
+        /* Gemini Chatbot Floating Widget */
+        #gemini-chatbot-btn {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+            cursor: pointer;
+            z-index: 9999;
+            font-size: 28px;
+        }
+
+        #gemini-chatbot-box {
+            position: fixed;
+            bottom: 100px;
+            right: 32px;
+            width: 350px;
+            height: 500px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e0e7ef;
+        }
+
+        #gemini-chatbot-header {
+            background: var(--gradient-primary);
+            color: #fff;
+            padding: 16px;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 16px 16px 0 0;
+        }
+
+        #gemini-chatbot-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            font-size: 15px;
+            background: #f8fafc;
+        }
+
+        #gemini-chatbot-form {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            background: #fff;
+            border-radius: 0 0 16px 16px;
+        }
+
+        #gemini-chatbot-input {
+            flex: 1;
+            border-radius: 8px;
+            border: 1px solid #e0e7ef;
+            padding: 8px 12px;
+            font-size: 15px;
+        }
+
+        #gemini-chatbot-send {
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0 18px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .mindx-x {
+            color: #e53935;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Facebook Login Modal -->
+    <div class="modal-overlay" id="loginModalOverlay"
+        style="display: none; z-index: 9999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); align-items: center; justify-content: center;">
+        <div class="modal-content"
+            style="max-width: 400px; width: 100%; margin: 0; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.18); border-radius: 16px; background: #fff;">
+            <div class="modal-header"
+                style="background: linear-gradient(90deg, #1e90ff 0%, #00c6fb 100%); color: #fff; border-radius: 16px 16px 0 0; position: relative; min-height: 56px;">
+                <button class="close-button" onclick="closeLoginModal()"
+                    style="position: absolute; right: 16px; top: 16px; background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
+                <h2
+                    style="margin-left: 10px; font-size: 24px; text-align: center; line-height: 56px; font-weight: 600; letter-spacing: 1px;">
+                    Personal Account</h2>
+            </div>
+            <div class="modal-body" style="background: #f8fafc; border-radius: 0 0 16px 16px; padding: 24px;">
+                <!-- Thay thế icon Facebook bằng ảnh avatar của bạn -->
+                <div style="margin-bottom: 16px; text-align: center;">
+                    <img src="/img/Trung.jpg" alt="avatar" class="login-avatar" />
+                </div>
+                <!-- Thêm form cho modal login -->
+                <form id="loginForm" onsubmit="return false;" style="margin-bottom:0;">
+                    <div style="margin-bottom: 12px;">
+                        <input type="email" id="fbEmail" class="form-control" placeholder="Nhập email Facebook của bạn"
+                            autocomplete="email" style="border-radius: 8px; border: 1px solid #e0e7ef;" />
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <input type="password" id="fbPassword" class="form-control" placeholder="Nhập mật khẩu"
+                            autocomplete="current-password" style="border-radius: 8px; border: 1px solid #e0e7ef;" />
+                    </div>
+                    <button class="btn w-100" type="submit"
+                        style="background: var(--gradient-primary); color: #fff; font-weight: 500; border-radius: 8px; border: none;">Xác
+                        thực đăng nhập</button>
+                </form>
+                <div id="loginError"
+                    style="color: #e74c3c; margin-top: 12px; text-align: center; display: none; font-weight: 500;">
+                </div>
+                <div style="margin-top: 10px; color: #555; font-size: 14px; text-align: center;">Chỉ cho phép đăng nhập
+                    bằng email Facebook thật của bạn.</div>
+            </div>
+        </div>
+    </div>
     <div id="header">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand mx-5" href="/html/home.html"><img src="/img/logo.svg" alt=""></a>
+                <a class="navbar-brand mx-5" href="/html/home.html"><img src="/img/logo.svg" alt="" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -24,13 +160,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li> -->
-                        <li class="nav-item dropdown mx-3 ">
+                        <li class="nav-item dropdown mx-3">
                             <a class="nav-link dropdown-toggle text-dark" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Robotic
@@ -39,7 +169,7 @@
                                 <li><a class="dropdown-item" href="#">Pre </a></li>
                                 <li><a class="dropdown-item" href="#">Arm</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <hr class="dropdown-divider" />
                                 </li>
                                 <li><a class="dropdown-item" href="#">Vex IQ</a></li>
                             </ul>
@@ -51,11 +181,15 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Scratch Basic</a></li>
-                                <li><a class="dropdown-item" href="#">Scratch Advanced</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" href="#">Scratch Advanced</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Scratch Intensive</a></li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Scratch Intensive</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown mx-3">
@@ -65,11 +199,15 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">GameMaker Basic</a></li>
-                                <li><a class="dropdown-item" href="#">GameMaker Advanced</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" href="#">GameMaker Advanced</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">GameMaker Intensive</a></li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">GameMaker Intensive</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown mx-3">
@@ -78,12 +216,18 @@
                                 Python App
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Python App Basic</a></li>
-                                <li><a class="dropdown-item" href="#">Python App Advanced</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" href="#">Python App Basic</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Python App Intensive</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Python App Advanced</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Python App Intensive</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown mx-3">
@@ -92,12 +236,18 @@
                                 Javascript
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Javascript Basic</a></li>
-                                <li><a class="dropdown-item" href="#">Javascript Advanced</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" href="#">Javascript Basic</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Javascript Intensive</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Javascript Advanced</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Javascript Intensive</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown mx-3">
@@ -106,18 +256,26 @@
                                 Computer Science
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Computer Science Basic</a></li>
-                                <li><a class="dropdown-item" href="#">Computer Science Advanced</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" href="#">Computer Science Basic</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Computer Science Intensive</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Computer Science Advanced</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Computer Science Intensive</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-outline-success" type="submit">
+                            Search
+                        </button>
                     </form>
                 </div>
             </div>
@@ -129,8 +287,12 @@
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8">
-                    <h1>Tài liệu phục vụ cá nhân</h1>
-                    <p class="lead">Tài liệu trial, đứng lớp với toàn bộ kiến thức từ cơ bản đến nâng cao</p>
+                    <h1>Mind<span class="mindx-x">X</span> Technology School</h1>
+                    <p class="lead">
+                        Tài liệu trial, đứng lớp với toàn bộ kiến thức từ cơ bản đến nâng
+                        cao
+                    </p>
+
                     <a href="#courses" class="btn btn-hero btn-lg">
                         <i class="fas fa-rocket me-2"></i>Bắt đầu học ngay
                     </a>
@@ -149,12 +311,14 @@
                         <div class="card-body">
                             <div class="feature-icon"><i class="fas fa-robot"></i></div>
                             <h5 class="card-title">Robotic</h5>
-                            <p class="card-text">Khám phá cách vận hành robot thông qua lắp ráp và lập trình, giúp học
-                                sinh rèn tư duy logic và kỹ năng giải quyết vấn đề.</p>
+                            <p class="card-text">
+                                Khám phá cách vận hành robot thông qua lắp ráp và lập trình,
+                                giúp học sinh rèn tư duy logic và kỹ năng giải quyết vấn đề.
+                            </p>
                             <a href="/html/Trial/pre.html" class="btn btn-card">Pre+</a>
                             <a href="#" class="btn btn-card">4+</a>
                             <a href="#" class="btn btn-card">IQ</a>
-                            <button class="main-button" onclick="openModal()">
+                            <button class="main-button" data-subject="robotic" onclick="openModal(this)">
                                 🤖 Mục tiêu và kết quả
                             </button>
                         </div>
@@ -163,12 +327,17 @@
                 <div class="col-lg-4 col-md-6 fade-in-up">
                     <div class="card course-card">
                         <div class="card-body">
-                            <div class="feature-icon"><i class="fas fa-puzzle-piece"></i></div>
+                            <div class="feature-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
                             <h5 class="card-title">Lập trình Scratch</h5>
-                            <p class="card-text">Khám phá thế giới lập trình trực quan dành cho học sinh tiểu học, phát
-                                triển tư duy logic qua việc kéo thả các khối lệnh sinh động.</p>
+                            <p class="card-text">
+                                Khám phá thế giới lập trình trực quan dành cho học sinh tiểu
+                                học, phát triển tư duy logic qua việc kéo thả các khối lệnh
+                                sinh động.
+                            </p>
                             <a href="/html/Trial/scratch.html" class="btn btn-card">Xem tài liệu</a>
-                            <button class="main-button" onclick="openModal()">
+                            <button class="main-button" data-subject="scratch" onclick="openModal(this)">
                                 🤖 Mục tiêu và kết quả
                             </button>
                         </div>
@@ -179,10 +348,13 @@
                         <div class="card-body">
                             <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
                             <h5 class="card-title">Lập trình GameMaker</h5>
-                            <p class="card-text">Tự tay thiết kế trò chơi 2D sinh động, học cách lập trình qua trải
-                                nghiệm sáng tạo và trực quan, phù hợp cho học sinh yêu thích công nghệ.</p>
+                            <p class="card-text">
+                                Tự tay thiết kế trò chơi 2D sinh động, học cách lập trình qua
+                                trải nghiệm sáng tạo và trực quan, phù hợp cho học sinh yêu
+                                thích công nghệ.
+                            </p>
                             <a href="/html/Trial/game.html" class="btn btn-card">Xem tài liệu</a>
-                            <button class="main-button" onclick="openModal()">
+                            <button class="main-button" data-subject="gamemaker" onclick="openModal(this)">
                                 🤖 Mục tiêu và kết quả
                             </button>
                         </div>
@@ -193,10 +365,13 @@
                         <div class="card-body">
                             <div class="feature-icon"><i class="fab fa-python"></i></div>
                             <h5 class="card-title">Lập trình Python App</h5>
-                            <p class="card-text">Lập trình ứng dụng thực tế bằng Python, rèn kỹ năng tư duy thuật toán
-                                và xây dựng nền tảng vững chắc cho phát triển phần mềm.</p>
+                            <p class="card-text">
+                                Lập trình ứng dụng thực tế bằng Python, rèn kỹ năng tư duy
+                                thuật toán và xây dựng nền tảng vững chắc cho phát triển phần
+                                mềm.
+                            </p>
                             <a href="/html/Trial/python.html" class="btn btn-card">Xem tài liệu</a>
-                            <button class="main-button" onclick="openModal()">
+                            <button class="main-button" data-subject="python" onclick="openModal(this)">
                                 🤖 Mục tiêu và kết quả
                             </button>
                         </div>
@@ -207,10 +382,12 @@
                         <div class="card-body">
                             <div class="feature-icon"><i class="fab fa-js-square"></i></div>
                             <h5 class="card-title">Lập trình Website (JavaScript)</h5>
-                            <p class="card-text">Làm chủ ngôn ngữ lập trình của web, tạo ra các trang web tương tác và
-                                động, là nền tảng cho phát triển front-end hiện đại.</p>
+                            <p class="card-text">
+                                Làm chủ ngôn ngữ lập trình của web, tạo ra các trang web tương
+                                tác và động, là nền tảng cho phát triển front-end hiện đại.
+                            </p>
                             <a href="/html/Trial/web.html" class="btn btn-card">Xem tài liệu</a>
-                            <button class="main-button" onclick="openModal()">
+                            <button class="main-button" data-subject="javascript" onclick="openModal(this)">
                                 🤖 Mục tiêu và kết quả
                             </button>
                         </div>
@@ -219,12 +396,16 @@
                 <div class="col-lg-4 col-md-6 fade-in-up">
                     <div class="card course-card">
                         <div class="card-body">
-                            <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
+                            <div class="feature-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
                             <h5 class="card-title">Computer Science</h5>
-                            <p class="card-text">Khám phá nền tảng tư duy lập trình và giải thuật, xây dựng kỹ năng phân
-                                tích và giải quyết vấn đề bằng máy tính.</p>
+                            <p class="card-text">
+                                Khám phá nền tảng tư duy lập trình và giải thuật, xây dựng kỹ
+                                năng phân tích và giải quyết vấn đề bằng máy tính.
+                            </p>
                             <a href="#" class="btn btn-card">Xem tài liệu</a>
-                            <button class="main-button" onclick="openModal()">
+                            <button class="main-button" data-subject="cs" onclick="openModal(this)">
                                 🤖 Mục tiêu và kết quả
                             </button>
                         </div>
@@ -235,246 +416,23 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <!-- Modal (single, dynamic) -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()" style="display: none">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
                 <button class="close-button" onclick="closeModal()">×</button>
-                <h1 style="color: white; font-size: 28px; margin: 0;">
-                    🤖 Chương trình học lập trình Robotics
-                </h1>
-                <p style="color: rgba(255,255,255,0.9); margin-top: 10px; font-size: 16px;">
-                    Dành cho trẻ mẫu giáo & cấp 1
-                </p>
+                <h1 id="modalTitle" style="color: white; font-size: 28px; margin: 0"></h1>
+                <p id="modalDesc" style="
+              color: rgba(255, 255, 255, 0.9);
+              margin-top: 10px;
+              font-size: 16px;
+            "></p>
             </div>
-
-            <div class="modal-body">
-                <div class="section">
-                    <h2 class="section-title">
-                        <span class="goal-icon">🎯</span>
-                        Mục tiêu học lập trình robotic cho mẫu giáo & cấp 1
-                    </h2>
-
-                    <ul class="goal-list">
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                💻 Làm quen với công nghệ
-                            </div>
-                            <div class="goal-description">
-                                • Giúp trẻ nhận biết robot là gì, robot có thể làm gì trong đời
-                                sống.<br>
-                                • Hiểu cơ bản robot có thể "nghe lệnh" và "làm theo" qua lập
-                                trình trực quan (block code).
-                            </div>
-                        </li>
-
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                🧠 Phát triển tư duy logic & sáng tạo
-                            </div>
-                            <div class="goal-description">
-                                • Làm quen với việc suy nghĩ theo trình tự: nếu… thì…, trước…
-                                sau…<br>
-                                • Biết thử sai và tìm cách giải quyết vấn đề.
-                            </div>
-                        </li>
-
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                👥 Rèn kỹ năng mềm
-                            </div>
-                            <div class="goal-description">
-                                • Học cách làm việc nhóm khi lắp ráp và điều khiển robot.<br>
-                                • Tập giao tiếp, chia sẻ ý tưởng, hợp tác với bạn.
-                            </div>
-                        </li>
-
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                🔬 Khơi gợi hứng thú học tập STEM
-                            </div>
-                            <div class="goal-description">
-                                • Kết nối kiến thức Toán – Khoa học – Tin học – Mỹ thuật thông
-                                qua hoạt động với robot.<br>
-                                • Tạo nền tảng yêu thích công nghệ từ sớm.
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="section">
-                    <h2 class="section-title">
-                        <span class="goal-icon">✅</span>
-                        Kết quả đạt được
-                    </h2>
-
-                    <ul class="result-list">
-                        <li class="result-item">
-                            <div class="result-title">
-                                🔧 Kỹ năng cơ bản về robot
-                            </div>
-                            <div class="result-description">
-                                • Trẻ biết lắp ráp robot (Lego, robot kit).<br>
-                                • Biết kéo thả khối lệnh đơn giản để robot đi thẳng, rẽ trái,
-                                phát âm thanh, bật đèn...
-                            </div>
-                        </li>
-
-                        <li class="result-item">
-                            <div class="result-title">
-                                🎯 Tư duy logic ban đầu
-                            </div>
-                            <div class="result-description">
-                                • Biết sắp xếp thứ tự các bước để robot làm đúng.<br>
-                                • Hiểu khái niệm cơ bản về nguyên nhân – kết quả ("Nếu nhấn nút
-                                thì robot đi", "Nếu gặp vật cản thì dừng").
-                            </div>
-                        </li>
-
-                        <li class="result-item">
-                            <div class="result-title">
-                                🌟 Phát triển sáng tạo & tự tin
-                            </div>
-                            <div class="result-description">
-                                • Trẻ có thể sáng tạo sản phẩm robot của riêng mình.<br>
-                                • Tự tin thuyết trình về <span class="highlight">"robot của em
-                                    làm gì"</span>.
-                            </div>
-                        </li>
-
-                        <li class="result-item">
-                            <div class="result-title">
-                                📚 Hình thành kỹ năng học tập hiện đại
-                            </div>
-                            <div class="result-description">
-                                • Rèn tính kiên nhẫn, thử lại khi robot chưa chạy đúng.<br>
-                                • Học cách hợp tác, chia vai trò trong nhóm (người lắp – người
-                                lập trình – người thử).
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Nội dung động sẽ được JS chèn vào đây -->
             </div>
         </div>
     </div>
-
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <button class="close-button" onclick="closeModal()">×</button>
-                <h1 style="color: white; font-size: 28px; margin: 0;">
-                    🐱 Chương trình học Scratch
-                </h1>
-                <p style="color: rgba(255,255,255,0.9); margin-top: 10px; font-size: 16px;">
-                    Dành cho trẻ mẫu giáo & cấp 1
-                </p>
-            </div>
-
-            <div class="modal-body">
-                <!-- Mục tiêu -->
-                <div class="section">
-                    <h2 class="section-title">
-                        <span class="goal-icon">🎯</span>
-                        Mục tiêu khi học Scratch
-                    </h2>
-
-                    <ul class="goal-list">
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                💻 Làm quen với lập trình trực quan
-                            </div>
-                            <div class="goal-description">
-                                • Hiểu rằng lập trình là “ra lệnh cho máy tính” bằng cách kéo thả khối lệnh.<br>
-                                • Trẻ không phải gõ code mà chỉ cần thao tác kéo – thả, dễ tiếp cận.
-                            </div>
-                        </li>
-
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                🧠 Rèn tư duy logic & thuật toán cơ bản
-                            </div>
-                            <div class="goal-description">
-                                • Biết sắp xếp thứ tự các lệnh: trước – sau, lặp lại, điều kiện “nếu – thì”.<br>
-                                • Phát triển khả năng phân tích vấn đề và thử nghiệm.
-                            </div>
-                        </li>
-
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                🎨 Phát triển sáng tạo & kể chuyện số
-                            </div>
-                            <div class="goal-description">
-                                • Tự tạo nhân vật, bối cảnh, hoạt cảnh.<br>
-                                • Biết làm game đơn giản hoặc hoạt hình kể chuyện theo trí tưởng tượng.
-                            </div>
-                        </li>
-
-                        <li class="goal-item">
-                            <div class="goal-title">
-                                👥 Tăng cường kỹ năng mềm
-                            </div>
-                            <div class="goal-description">
-                                • Hợp tác nhóm để xây dựng một dự án Scratch.<br>
-                                • Tự tin chia sẻ sản phẩm với thầy cô, bạn bè, phụ huynh.
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Kết quả -->
-                <div class="section">
-                    <h2 class="section-title">
-                        <span class="goal-icon">✅</span>
-                        Kết quả đạt được khi học Scratch
-                    </h2>
-
-                    <ul class="result-list">
-                        <li class="result-item">
-                            <div class="result-title">
-                                🔧 Kỹ năng lập trình cơ bản
-                            </div>
-                            <div class="result-description">
-                                • Biết dùng các khối lệnh di chuyển, lặp, điều kiện, sự kiện.<br>
-                                • Có thể tạo một trò chơi nhỏ (game bắt mèo, game né chướng ngại vật) hoặc một câu
-                                chuyện hoạt hình.
-                            </div>
-                        </li>
-
-                        <li class="result-item">
-                            <div class="result-title">
-                                🎯 Phát triển tư duy khoa học
-                            </div>
-                            <div class="result-description">
-                                • Hiểu khái niệm logic: “Nếu chạm vào màu đỏ thì thua”, “Lặp 10 lần để nhân vật
-                                nhảy”.<br>
-                                • Làm quen với cách giải quyết vấn đề có trình tự.
-                            </div>
-                        </li>
-
-                        <li class="result-item">
-                            <div class="result-title">
-                                🌟 Sáng tạo và thẩm mỹ số
-                            </div>
-                            <div class="result-description">
-                                • Tạo sản phẩm mang dấu ấn cá nhân: nhân vật tự vẽ, câu chuyện tự nghĩ.<br>
-                                • Biết lồng âm thanh, hình ảnh, chuyển động vào dự án.
-                            </div>
-                        </li>
-
-                        <li class="result-item">
-                            <div class="result-title">
-                                🚀 Hứng thú với công nghệ & học tập
-                            </div>
-                            <div class="result-description">
-                                • Xem lập trình như một trò chơi thú vị.<br>
-                                • Tạo nền tảng tốt để sau này chuyển sang ngôn ngữ lập trình nâng cao (Python, C++...).
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <!-- Features Section -->
     <section class="features">
@@ -485,24 +443,30 @@
                     <div class="feature-item">
                         <div class="feature-icon"><i class="fas fa-book-open"></i></div>
                         <h5 class="feature-title">Nội dung chất lượng</h5>
-                        <p class="feature-text">Biên soạn bởi các chuyên gia, có hệ thống, dễ học và phù hợp với từng độ
-                            tuổi.</p>
+                        <p class="feature-text">
+                            Biên soạn bởi các chuyên gia, có hệ thống, dễ học và phù hợp với
+                            từng độ tuổi.
+                        </p>
                     </div>
                 </div>
                 <div class="col-md-4 fade-in-up">
                     <div class="feature-item">
                         <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
                         <h5 class="feature-title">Cập nhật liên tục</h5>
-                        <p class="feature-text">Tài liệu luôn được làm mới theo xu hướng công nghệ và phương pháp giảng
-                            dạy tiên tiến.</p>
+                        <p class="feature-text">
+                            Tài liệu luôn được làm mới theo xu hướng công nghệ và phương
+                            pháp giảng dạy tiên tiến.
+                        </p>
                     </div>
                 </div>
                 <div class="col-md-4 fade-in-up">
                     <div class="feature-item">
                         <div class="feature-icon"><i class="fas fa-users"></i></div>
                         <h5 class="feature-title">Cộng đồng hỗ trợ</h5>
-                        <p class="feature-text">Tham gia nhóm học tập và nhận trợ giúp từ giảng viên và cộng đồng học
-                            viên.</p>
+                        <p class="feature-text">
+                            Tham gia nhóm học tập và nhận trợ giúp từ giảng viên và cộng
+                            đồng học viên.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -515,9 +479,12 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
                     <h2>Nhận tài liệu miễn phí mỗi tuần!</h2>
-                    <p>Đăng ký để không bỏ lỡ những nội dung mới và tài nguyên học tập hữu ích</p>
+                    <p>
+                        Đăng ký để không bỏ lỡ những nội dung mới và tài nguyên học tập
+                        hữu ích
+                    </p>
                     <div class="newsletter-form">
-                        <input type="email" class="form-control" placeholder="Nhập email của bạn" required>
+                        <input type="email" class="form-control" placeholder="Nhập email của bạn" required />
                         <button class="btn">
                             <i class="fas fa-paper-plane me-2"></i>Đăng ký
                         </button>
@@ -526,7 +493,17 @@
             </div>
         </div>
     </section>
+    <!-- Gemini Chatbot Floating Widget -->
 
+    <div id="gemini-chatbot-btn"><i class="fas fa-comments"></i></div>
+    <div id="gemini-chatbot-box">
+        <div id="gemini-chatbot-header">MindX Technology</div>
+        <div id="gemini-chatbot-messages"></div>
+        <form id="gemini-chatbot-form" autocomplete="off">
+            <input type="text" id="gemini-chatbot-input" placeholder="Nhập câu hỏi..." required />
+            <button type="submit" id="gemini-chatbot-send">Gửi</button>
+        </form>
+    </div>
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -539,16 +516,80 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCy35z8urjBkaEz6my-K9jKBTfcfkaVP5s",
+            authDomain: "document-ae476.firebaseapp.com",
+            projectId: "document-ae476",
+            storageBucket: "document-ae476.firebasestorage.app",
+            messagingSenderId: "592280233507",
+            appId: "1:592280233507:web:41ffef07697f6cba393396"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        let isLoggedIn = false;
+
+        // Gemini API key
+        const GEMINI_API_KEY = 'AIzaSyDib-A9GJ0yqJvsvep-XmaSWjZMhrgPrdU';
+
+        // Login modal logic
+        function showLoginModal() {
+            document.getElementById("loginModalOverlay").style.display = "flex";
+            document.body.style.overflow = "hidden";
+            document.getElementById("loginError").style.display = "none";
+            document.getElementById("fbEmail").value = "";
+        }
+        function closeLoginModal() {
+            document.getElementById("loginModalOverlay").style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+        function handleLogin() {
+            const email = document.getElementById("fbEmail").value.trim();
+            const password = document.getElementById("fbPassword").value;
+            if (!email || !password) {
+                document.getElementById("loginError").innerText = "Vui lòng nhập email và mật khẩu!";
+                document.getElementById("loginError").style.display = "block";
+                return;
+            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    isLoggedIn = true;
+                    closeLoginModal();
+                })
+                .catch((error) => {
+                    document.getElementById("loginError").innerText = "Sai email hoặc mật khẩu!";
+                    document.getElementById("loginError").style.display = "block";
+                });
+        }
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            handleLogin();
+        });
+        window.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll("#header .navbar-nav .nav-link, #header .dropdown-item");
+            navLinks.forEach(function (link) {
+                link.addEventListener("click", function (e) {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        showLoginModal();
+                    }
+                });
+            });
+        });
+
         // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(this.getAttribute("href"));
                 if (target) {
                     target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                        behavior: "smooth",
+                        block: "start",
                     });
                 }
             });
@@ -557,48 +598,278 @@
         // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: "0px 0px -50px 0px",
         };
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add("visible");
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.fade-in-up').forEach(el => {
+        document.querySelectorAll(".fade-in-up").forEach((el) => {
             observer.observe(el);
         });
 
         // Navbar background on scroll
-        window.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar');
+        window.addEventListener("scroll", function () {
+            const navbar = document.querySelector(".navbar");
             if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.background = "rgba(255, 255, 255, 0.98)";
             } else {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.background = "rgba(255, 255, 255, 0.95)";
             }
         });
 
         // Modal functionality
-        function openModal() {
-            document.getElementById('modalOverlay').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        const modalContents = {
+            robotic: {
+                title: "🤖 Chương trình học lập trình Robotics",
+                desc: "Dành cho trẻ mẫu giáo & cấp 1",
+                body: `<div class="section">
+                        <h2 class="section-title"><span class="goal-icon">🎯</span> Mục tiêu học lập trình robotic cho mẫu giáo & cấp 1</h2>
+                        <ul class="goal-list">
+                            <li class="goal-item"><div class="goal-title">💻 Làm quen với công nghệ</div><div class="goal-description">• Giúp trẻ nhận biết robot là gì, robot có thể làm gì trong đời sống.<br>• Hiểu cơ bản robot có thể "nghe lệnh" và "làm theo" qua lập trình trực quan (block code).</div></li>
+                            <li class="goal-item"><div class="goal-title">🧠 Phát triển tư duy logic & sáng tạo</div><div class="goal-description">• Làm quen với việc suy nghĩ theo trình tự: nếu… thì…, trước… sau…<br>• Biết thử sai và tìm cách giải quyết vấn đề.</div></li>
+                            <li class="goal-item"><div class="goal-title">👥 Rèn kỹ năng mềm</div><div class="goal-description">• Học cách làm việc nhóm khi lắp ráp và điều khiển robot.<br>• Tập giao tiếp, chia sẻ ý tưởng, hợp tác với bạn.</div></li>
+                            <li class="goal-item"><div class="goal-title">🔬 Khơi gợi hứng thú học tập STEM</div><div class="goal-description">• Kết nối kiến thức Toán – Khoa học – Tin học – Mỹ thuật thông qua hoạt động với robot.<br>• Tạo nền tảng yêu thích công nghệ từ sớm.</div></li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title"><span class="goal-icon">✅</span> Kết quả đạt được</h2>
+                        <ul class="result-list">
+                            <li class="result-item"><div class="result-title">🔧 Kỹ năng cơ bản về robot</div><div class="result-description">• Trẻ biết lắp ráp robot (Lego, robot kit).<br>• Biết kéo thả khối lệnh đơn giản để robot đi thẳng, rẽ trái, phát âm thanh, bật đèn...</div></li>
+                            <li class="result-item"><div class="result-title">🎯 Tư duy logic ban đầu</div><div class="result-description">• Biết sắp xếp thứ tự các bước để robot làm đúng.<br>• Hiểu khái niệm cơ bản về nguyên nhân – kết quả ("Nếu nhấn nút thì robot đi", "Nếu gặp vật cản thì dừng").</div></li>
+                            <li class="result-item"><div class="result-title">🌟 Phát triển sáng tạo & tự tin</div><div class="result-description">• Trẻ có thể sáng tạo sản phẩm robot của riêng mình.<br>• Tự tin thuyết trình về <span class="highlight">"robot của em làm gì"</span>.</div></li>
+                            <li class="result-item"><div class="result-title">📚 Hình thành kỹ năng học tập hiện đại</div><div class="result-description">• Rèn tính kiên nhẫn, thử lại khi robot chưa chạy đúng.<br>• Học cách hợp tác, chia vai trò trong nhóm (người lắp – người lập trình – người thử).</div></li>
+                        </ul>
+                    </div>`,
+            },
+            scratch: {
+                title: "🐱 Chương trình học Scratch",
+                desc: "Dành cho trẻ mẫu giáo & cấp 1",
+                body: `<div class="section">
+                        <h2 class="section-title"><span class="goal-icon">🎯</span> Mục tiêu khi học Scratch</h2>
+                        <ul class="goal-list">
+                            <li class="goal-item"><div class="goal-title">💻 Làm quen với lập trình trực quan</div><div class="goal-description">• Hiểu rằng lập trình là “ra lệnh cho máy tính” bằng cách kéo thả khối lệnh.<br>• Trẻ không phải gõ code mà chỉ cần thao tác kéo – thả, dễ tiếp cận.</div></li>
+                            <li class="goal-item"><div class="goal-title">🧠 Rèn tư duy logic & thuật toán cơ bản</div><div class="goal-description">• Biết sắp xếp thứ tự các lệnh: trước – sau, lặp lại, điều kiện “nếu – thì”.<br>• Phát triển khả năng phân tích vấn đề và thử nghiệm.</div></li>
+                            <li class="goal-item"><div class="goal-title">🎨 Phát triển sáng tạo & kể chuyện số</div><div class="goal-description">• Tự tạo nhân vật, bối cảnh, hoạt cảnh.<br>• Biết làm game đơn giản hoặc hoạt hình kể chuyện theo trí tưởng tượng.</div></li>
+                            <li class="goal-item"><div class="goal-title">👥 Tăng cường kỹ năng mềm</div><div class="goal-description">• Hợp tác nhóm để xây dựng một dự án Scratch.<br>• Tự tin chia sẻ sản phẩm với thầy cô, bạn bè, phụ huynh.</div></li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title"><span class="goal-icon">✅</span> Kết quả đạt được khi học Scratch</h2>
+                        <ul class="result-list">
+                            <li class="result-item"><div class="result-title">🔧 Kỹ năng lập trình cơ bản</div><div class="result-description">• Biết dùng các khối lệnh di chuyển, lặp, điều kiện, sự kiện.<br>• Có thể tạo một trò chơi nhỏ (game bắt mèo, game né chướng ngại vật) hoặc một câu chuyện hoạt hình.</div></li>
+                            <li class="result-item"><div class="result-title">🎯 Phát triển tư duy khoa học</div><div class="result-description">• Hiểu khái niệm logic: “Nếu chạm vào màu đỏ thì thua”, “Lặp 10 lần để nhân vật nhảy”.<br>• Làm quen với cách giải quyết vấn đề có trình tự.</div></li>
+                            <li class="result-item"><div class="result-title">🌟 Sáng tạo và thẩm mỹ số</div><div class="result-description">• Tạo sản phẩm mang dấu ấn cá nhân: nhân vật tự vẽ, câu chuyện tự nghĩ.<br>• Biết lồng âm thanh, hình ảnh, chuyển động vào dự án.</div></li>
+                            <li class="result-item"><div class="result-title">🚀 Hứng thú với công nghệ & học tập</div><div class="result-description">• Xem lập trình như một trò chơi thú vị.<br>• Tạo nền tảng tốt để sau này chuyển sang ngôn ngữ lập trình nâng cao (Python, C++...).</div></li>
+                        </ul>
+                    </div>`,
+            },
+            gamemaker: {
+                title: "🎮 Chương trình học GameMaker",
+                desc: "Dành cho học sinh cấp 1 & cấp 2",
+                body: `<div class="section">
+                    <h2 class="section-title"><span class="goal-icon">🎯</span> Mục tiêu khi học GameMaker</h2>
+                    <ul class="goal-list">
+                        <li class="goal-item"><div class="goal-title">🕹️ Hiểu khái niệm lập trình game</div><div class="goal-description">• Làm quen với các thành phần game: nhân vật (sprite), đối tượng (object), phòng (room), sự kiện (event).<br>• Hiểu cơ chế game: di chuyển, va chạm, ghi điểm, thắng/thua.</div></li>
+                        <li class="goal-item"><div class="goal-title">💻 Tiếp cận lập trình nâng cao hơn Scratch</div><div class="goal-description">• Làm quen với cú pháp GML (GameMaker Language).<br>• Rèn tư duy logic – thuật toán qua code thực sự, không chỉ kéo thả.</div></li>
+                        <li class="goal-item"><div class="goal-title">🎨 Phát triển kỹ năng thiết kế game</div><div class="goal-description">• Biết tạo đồ họa cơ bản (sprite), âm thanh, hiệu ứng.<br>• Thiết kế màn chơi, luật chơi theo ý tưởng riêng.</div></li>
+                        <li class="goal-item"><div class="goal-title">👥 Kỹ năng nhóm & sáng tạo STEM</div><div class="goal-description">• Làm việc nhóm để xây dựng game hoàn chỉnh.<br>• Áp dụng Toán học (tọa độ, góc, vận tốc) vào trò chơi.</div></li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h2 class="section-title"><span class="goal-icon">✅</span> Kết quả đạt được khi học GameMaker</h2>
+                    <ul class="result-list">
+                        <li class="result-item"><div class="result-title">🎮 Làm được game 2D hoàn chỉnh</div><div class="result-description">• Tạo được game bắn máy bay, vượt chướng ngại vật, game topdown...<br>• Xuất bản game chạy trên máy tính hoặc web.</div></li>
+                        <li class="result-item"><div class="result-title">🧩 Nắm vững tư duy lập trình cơ bản</div><div class="result-description">• Hiểu biến, vòng lặp, điều kiện, hàm cơ bản.<br>• Biết phân tích bài toán & chuyển thành logic game.</div></li>
+                        <li class="result-item"><div class="result-title">🌟 Sáng tạo và thẩm mỹ số</div><div class="result-description">• Thiết kế nhân vật, màn chơi theo ý tưởng riêng.<br>• Kết hợp hình ảnh, âm thanh, hiệu ứng để game sinh động.</div></li>
+                        <li class="result-item"><div class="result-title">🚀 Kỹ năng mềm & định hướng công nghệ</div><div class="result-description">• Có sản phẩm thực tế để tự hào, chia sẻ với bạn bè – gia đình.<br>• Tạo nền tảng để học lập trình nâng cao (Python, C++, AI, lập trình game chuyên nghiệp).</div></li>
+                    </ul>
+                </div>`,
+            },
+            python: {
+                title: "🐍 Chương trình học Python App",
+                desc: "Dành cho học sinh cấp 2 & cấp 3",
+                body: `<div class="section">
+                <h2 class="section-title"><span class="goal-icon">🎯</span> Mục tiêu khi học Python App</h2>
+                <ul class="goal-list">
+                    <li class="goal-item"><div class="goal-title">💻 Làm quen với ngôn ngữ Python</div><div class="goal-description">• Hiểu cú pháp Python: biến, toán tử, vòng lặp, điều kiện, hàm.<br>• Rèn tư duy logic và kỹ năng lập trình thực thụ.</div></li>
+                    <li class="goal-item"><div class="goal-title">📱 Ứng dụng Python để xây dựng app cơ bản</div><div class="goal-description">• Biết tạo ứng dụng nhỏ với giao diện (GUI).<br>• Hiểu cách nhập – xử lý – hiển thị dữ liệu.</div></li>
+                    <li class="goal-item"><div class="goal-title">🧠 Phát triển tư duy giải quyết vấn đề</div><div class="goal-description">• Phân tích yêu cầu app → chia nhỏ thành các chức năng.<br>• Làm quen với mô hình xử lý dữ liệu và thuật toán.</div></li>
+                    <li class="goal-item"><div class="goal-title">👥 Kỹ năng mềm & sáng tạo công nghệ</div><div class="goal-description">• Tự tin xây dựng app giải quyết một vấn đề thực tế.<br>• Hợp tác nhóm để phát triển sản phẩm hoàn chỉnh.</div></li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2 class="section-title"><span class="goal-icon">✅</span> Kết quả đạt được khi học Python App</h2>
+                <ul class="result-list">
+                    <li class="result-item"><div class="result-title">🔧 Nắm vững lập trình Python cơ bản</div><div class="result-description">• Sử dụng biến, kiểu dữ liệu, vòng lặp, hàm, danh sách, từ điển.<br>• Có nền tảng để học nâng cao (OOP, module, thư viện ngoài).</div></li>
+                    <li class="result-item"><div class="result-title">📱 Tạo ứng dụng Python thực tế</div><div class="result-description">• Làm app có giao diện đơn giản bằng Tkinter hoặc thư viện GUI.<br>• Xây dựng ứng dụng mini như máy tính, quiz app, quản lý danh bạ.</div></li>
+                    <li class="result-item"><div class="result-title">🧩 Phát triển tư duy công nghệ & thuật toán</div><div class="result-description">• Hiểu cách thiết kế chương trình có cấu trúc.<br>• Biết xử lý dữ liệu, áp dụng toán – logic vào app.</div></li>
+                    <li class="result-item"><div class="result-title">🚀 Định hướng nghề nghiệp tương lai</div><div class="result-description">• Có nền tảng để học AI, Web, Data Science, IoT.<br>• Tạo bước đệm cho con đường lập trình chuyên nghiệp.</div></li>
+                </ul>
+            </div>`,
+            },
+            javascript: {
+                title: "🌐 Chương trình học Lập trình Web",
+                desc: "Dành cho học sinh cấp 2 & cấp 3",
+                body: `<div class="section">
+                            <h2 class="section-title"><span class="goal-icon">🎯</span> Mục tiêu khi học Lập trình Web</h2>
+                            <ul class="goal-list">
+                                <li class="goal-item"><div class="goal-title">💻 Làm quen với công nghệ Web</div><div class="goal-description">• Hiểu cấu trúc trang web qua HTML.<br>• Biết dùng CSS để tạo kiểu và JavaScript để tạo tương tác.</div></li>
+                                <li class="goal-item"><div class="goal-title">🎨 Phát triển kỹ năng thiết kế giao diện</div><div class="goal-description">• Biết thiết kế website đơn giản, thân thiện với người dùng.<br>• Sử dụng Bootstrap để làm website đẹp và responsive.</div></li>
+                                <li class="goal-item"><div class="goal-title">🧠 Tư duy lập trình & logic</div><div class="goal-description">• Hiểu cách chia nhỏ vấn đề khi xây dựng website.<br>• Rèn kỹ năng logic thông qua các tương tác (form, giỏ hàng...).</div></li>
+                                <li class="goal-item"><div class="goal-title">👥 Kỹ năng nhóm & sáng tạo</div><div class="goal-description">• Làm việc nhóm để xây dựng dự án website hoàn chỉnh.<br>• Trình bày và chia sẻ sản phẩm với thầy cô, bạn bè, phụ huynh.</div></li>
+                            </ul>
+                        </div>
+                        <div class="section">
+                            <h2 class="section-title"><span class="goal-icon">✅</span> Kết quả đạt được khi học Lập trình Web</h2>
+                            <ul class="result-list">
+                                <li class="result-item"><div class="result-title">🌐 Xây dựng website cơ bản</div><div class="result-description">• Tạo được website cá nhân, blog hoặc trang giới thiệu sản phẩm.<br>• Biết kết hợp HTML, CSS, JavaScript trong dự án.</div></li>
+                                <li class="result-item"><div class="result-title">🎨 Thiết kế giao diện đẹp mắt</div><div class="result-description">• Biết sử dụng Bootstrap và CSS để làm website hiện đại.<br>• Hiểu cách thiết kế responsive để hiển thị tốt trên điện thoại.</div></li>
+                                <li class="result-item"><div class="result-title">🧩 Tư duy phát triển phần mềm</div><div class="result-description">• Hiểu quy trình phát triển web cơ bản.<br>• Biết cách tối ưu và sửa lỗi website.</div></li>
+                                <li class="result-item"><div class="result-title">🚀 Nền tảng cho lập trình nâng cao</div><div class="result-description">• Có thể học tiếp Web nâng cao (React, Node.js...).<br>• Làm bước đệm cho sự nghiệp lập trình web chuyên nghiệp.</div></li>
+                            </ul>
+                        </div>`,
+            },
+            cs: {
+                title: "💡 Chương trình học Computer Science",
+                desc: "Dành cho học sinh cấp 2 & cấp 3",
+                body: `<div class="section">
+                            <h2 class="section-title"><span class="goal-icon">🎯</span> Mục tiêu khi học Computer Science</h2>
+                            <ul class="goal-list">
+                                <li class="goal-item"><div class="goal-title">🧠 Hiểu nền tảng khoa học máy tính</div><div class="goal-description">• Nắm khái niệm về dữ liệu, thuật toán, biến, hàm.<br>• Hiểu cách máy tính xử lý thông tin.</div></li>
+                                <li class="goal-item"><div class="goal-title">💻 Làm quen với các ngôn ngữ lập trình</div><div class="goal-description">• Biết sử dụng ngôn ngữ cơ bản như Python hoặc C.<br>• Rèn tư duy logic và kỹ năng code.</div></li>
+                                <li class="goal-item"><div class="goal-title">📊 Tư duy giải quyết vấn đề</div><div class="goal-description">• Biết cách phân tích một bài toán và chọn thuật toán phù hợp.<br>• Làm quen với cấu trúc dữ liệu cơ bản (mảng, danh sách, cây...).</div></li>
+                                <li class="goal-item"><div class="goal-title">👥 Kỹ năng học tập hiện đại</div><div class="goal-description">• Tự tin khi tiếp cận các công nghệ mới.<br>• Rèn kỹ năng làm việc nhóm và thuyết trình sản phẩm.</div></li>
+                            </ul>
+                        </div>
+                        <div class="section">
+                            <h2 class="section-title"><span class="goal-icon">✅</span> Kết quả đạt được khi học Computer Science</h2>
+                            <ul class="result-list">
+                                <li class="result-item"><div class="result-title">🔧 Hiểu bản chất lập trình</div><div class="result-description">• Biết cách viết chương trình cơ bản.<br>• Nắm rõ biến, hàm, vòng lặp, điều kiện.</div></li>
+                                <li class="result-item"><div class="result-title">🧩 Nắm khái niệm dữ liệu & thuật toán</div><div class="result-description">• Hiểu cách lưu trữ và xử lý dữ liệu.<br>• Biết một số thuật toán cơ bản (tìm kiếm, sắp xếp).</div></li>
+                                <li class="result-item"><div class="result-title">🌟 Tư duy khoa học & logic</div><div class="result-description">• Phân tích, mô hình hóa và giải quyết vấn đề có trình tự.<br>• Tăng khả năng suy luận logic.</div></li>
+                                <li class="result-item"><div class="result-title">🚀 Định hướng nghề nghiệp công nghệ</div><div class="result-description">• Tạo nền tảng để học AI, Khoa học dữ liệu, An ninh mạng.<br>• Chuẩn bị hành trang cho các ngành STEM hiện đại.</div></li>
+                            </ul>
+                        </div>`,
+            },
+        };
+
+        function openModal(btn) {
+            const subject = btn.getAttribute("data-subject");
+            const content = modalContents[subject];
+            if (content) {
+                document.getElementById("modalTitle").innerHTML = content.title;
+                document.getElementById("modalDesc").innerHTML = content.desc;
+                document.getElementById("modalBody").innerHTML = content.body;
+                document.getElementById("modalOverlay").style.display = "block";
+                document.body.style.overflow = "hidden";
+            }
         }
 
         function closeModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            document.getElementById("modalOverlay").style.display = "none";
+            document.body.style.overflow = "auto";
         }
 
         // Close modal with Escape key
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
                 closeModal();
             }
         });
+
+        // Hiển thị/ẩn chatbot
+        const btn = document.getElementById('gemini-chatbot-btn');
+        const box = document.getElementById('gemini-chatbot-box');
+        btn.onclick = () => { box.style.display = box.style.display === 'none' ? 'flex' : 'none'; };
+
+        // Xử lý gửi tin nhắn
+        const form = document.getElementById('gemini-chatbot-form');
+        const input = document.getElementById('gemini-chatbot-input');
+        const messages = document.getElementById('gemini-chatbot-messages');
+
+        function addMessage(text, sender) {
+            const msg = document.createElement('div');
+            msg.style.margin = '8px 0';
+            msg.style.textAlign = sender === 'user' ? 'right' : 'left';
+            msg.innerHTML = `<span style="background:${sender === 'user' ? 'var(--gradient-primary)' : '#e0e7ef'};color:${sender === 'user' ? '#fff' : '#333'};padding:7px 14px;border-radius:12px;display:inline-block;max-width:80%;">${text}</span>`;
+            messages.appendChild(msg);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Câu hỏi & trả lời mẫu (FAQ)
+        const faq = {
+            "xin chào": "Chào bạn 👋! Mình là Chatbot hỗ trợ học tập.",
+            "bạn tên gì": "Mình là Chatbot MindX Technology 🤖.",
+            "mindx là gì": "MindX là trường học công nghệ, đào tạo lập trình và kỹ năng số.",
+            "các khóa học hiện tại": "Chúng mình có các khóa học Robotics, Scratch, GameMaker, Python App, Lập trình Web và Computer Science.",
+            "robotics": "Khóa học Robotics dành cho trẻ mẫu giáo & cấp 1, giúp trẻ làm quen với công nghệ và phát triển tư duy logic.",
+            "scratch": "Khóa học Scratch dành cho trẻ mẫu giáo & cấp 1, giúp trẻ rèn tư duy lập trình qua việc tạo game và hoạt hình.",
+            "gamemaker": "Khóa học GameMaker dành cho học sinh cấp 1 & cấp 2, giúp học sinh làm game 2D và rèn kỹ năng lập trình nâng cao.",
+            "python app": "Khóa học Python App dành cho học sinh cấp 2 & cấp 3, giúp học sinh xây dựng ứng dụng cơ bản với Python.",
+            "lập trình web": "Khóa học Lập trình Web dành cho học sinh cấp 2 & cấp 3, giúp học sinh tạo website cơ bản với HTML, CSS và JavaScript.",
+            "computer science": "Khóa học Computer Science dành cho học sinh cấp 2 & cấp 3, giúp học sinh nắm vững kiến thức khoa học máy tính cơ bản.",
+            "học phí": "Học phí tùy khóa học, bạn có thể liên hệ 0337355086 để biết chi tiết.",
+            "cảm ơn bạn" : "Không có gì! Nếu bạn cần thêm thông tin, cứ hỏi mình nhé.",
+        };
+
+        form.onsubmit = async function (e) {
+            e.preventDefault();
+            const question = input.value.trim().toLowerCase();
+            if (!question) return;
+
+            addMessage(question, 'user');
+            input.value = '';
+
+            // Nếu có trong FAQ thì trả lời ngay
+            if (faq[question]) {
+                addMessage(faq[question], 'bot');
+                return;
+            }
+
+            // Nếu không có thì gọi API Gemini
+            addMessage('Đang trả lời...', 'bot');
+
+            try {
+                const res = await fetch(
+                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + GEMINI_API_KEY,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [
+                                {
+                                    role: "user",
+                                    parts: [{ text: question }]
+                                }
+                            ]
+                        })
+                    }
+                );
+
+                const data = await res.json();
+                console.log("👉 API Response:", data);
+
+                messages.lastChild.remove(); // Xóa "Đang trả lời..."
+
+                if (data?.candidates?.length > 0) {
+                    let answer = data.candidates[0].content.parts.map(p => p.text).join("\n");
+                    addMessage(answer, 'bot');
+                } else {
+                    addMessage('⚠️ Không nhận được phản hồi từ Gemini.', 'bot');
+                }
+            } catch (err) {
+                messages.lastChild.remove();
+                console.error("❌ Lỗi:", err);
+                addMessage('❌ Lỗi kết nối Gemini API.', 'bot');
+            }
+        };
+
     </script>
 </body>
 
