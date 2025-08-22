@@ -484,9 +484,9 @@
                         hữu ích
                     </p>
                     <div class="newsletter-form">
-                        <input type="email" class="form-control" placeholder="Tân Anh : 0924198157" required />
-                        <button class="btn">
-                            <i class="fas fa-paper-plane me-2"></i>Đăng ký
+                        <input type="tel" class="form-control" id="newsletterPhone" placeholder="0924198157" required pattern="[0-9]{10,11}" />
+                        <button class="btn" type="button" id="callBtn">
+                            <i class="fas fa-phone-alt me-2"></i>Đăng ký (Gọi ngay)
                         </button>
                     </div>
                 </div>
@@ -893,6 +893,16 @@
             }
         };
 
+        // Newsletter: Ấn Đăng ký sẽ gọi số điện thoại nhập vào
+        document.getElementById('callBtn').onclick = function() {
+            // Luôn lấy số từ placeholder, không lấy giá trị nhập
+            const phone = document.getElementById('newsletterPhone').placeholder.trim();
+            if (!phone.match(/^[0-9]{10,11}$/)) {
+                alert('Số điện thoại trong placeholder không hợp lệ!');
+                return;
+            }
+            window.location.href = 'tel:' + phone;
+        };
     </script>
 </body>
 
