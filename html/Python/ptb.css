@@ -1,0 +1,483 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    color: white;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 5px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    height: 12px;
+    border-radius: 15px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Grid Layout - 4 items per row */
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.lesson-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.lesson-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.lesson-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.lesson-card.completed::before {
+    background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+}
+
+.lesson-card.completed .lesson-number {
+    background: linear-gradient(45deg, #4caf50, #8bc34a);
+}
+
+.lesson-number {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.lesson-title {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.lesson-preview {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.lesson-status {
+    margin-top: 15px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-current {
+    background: #cce7ff;
+    color: #004085;
+}
+
+/* Content Modal */
+.content-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.content-modal-body {
+    background: white;
+    margin: 2% auto;
+    border-radius: 20px;
+    width: 95%;
+    max-width: 1000px;
+    min-height: 90%;
+    position: relative;
+}
+
+.content-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.content-body {
+    padding: 30px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.content-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    color: #333;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.section-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.code-block {
+    background: #1e1e1e;
+    color: #f8f8f2;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 20px;
+    border-radius: 10px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+.file-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+}
+
+.file-item {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.file-item:hover {
+    background: #e9ecef;
+}
+
+.file-icon {
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.exercise-section {
+    background: #f0f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #007bff;
+}
+
+.mark-complete-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.mark-complete-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.mark-complete-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .lessons-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .lessons-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .header h1 {
+        font-size: 2.2rem;
+    }
+
+    .lesson-card {
+        padding: 15px;
+        min-height: 180px;
+    }
+
+    .content-modal-body {
+        width: 98%;
+        margin: 1% auto;
+    }
+
+    .content-body {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lessons-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Reset và khoảng cách chung cho danh sách trong phần nội dung */
+.content-section ul,
+.content-section ol {
+    margin-top: 10px;
+    padding-left: 0;
+}
+
+/* Từng dòng mục (li) – thẻ dòng chuyên nghiệp */
+.content-section li {
+    list-style: none;
+    position: relative;
+    padding: 10px 12px 10px 36px;
+    border-radius: 10px;
+    line-height: 1.55;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .04) inset;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+/* Khoảng cách giữa các dòng */
+.content-section li+li {
+    margin-top: 8px;
+}
+
+/* Bullet “viên ngọc” cho UL */
+.content-section ul li::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, #00f2fe, #4facfe);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 0 2px rgba(79, 172, 254, .15);
+}
+
+/* Số thứ tự dạng badge cho OL (homework) */
+.content-section ol {
+    counter-reset: item;
+}
+
+.content-section ol li {
+    counter-increment: item;
+}
+
+.content-section ol li::before {
+    content: counter(item);
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 10px rgba(102, 126, 234, .3);
+}
+
+/* Hiệu ứng hover tinh tế */
+.content-section li:hover {
+    box-shadow: 0 0 0 1px rgba(102, 126, 234, .25) inset, 0 6px 18px rgba(0, 0, 0, .06);
+    transform: translateY(-1px);
+}
+
+/* Optional: vạch “zebra” rất nhẹ giúp tách dòng */
+.content-section ul li:nth-child(odd),
+.content-section ol li:nth-child(odd) {
+    background: #f9fbff;
+}
+
+/* Nâng chất code block: gọn gàng, dễ đọc, scrollbar đẹp */
+.code-block {
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    background: #0e0f12;
+}
+
+.code-block::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .22);
+    border-radius: 8px;
+}
+
+.code-block::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, .06);
+}
+
+/* Scrollbar mượt cho phần nội dung modal */
+.content-body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, .25) transparent;
+}
+
+.content-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.content-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .25);
+    border-radius: 10px;
+}
+
+/* Nút phụ cạnh Hoàn thành */
+.action-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.action-row .secondary-btn {
+    margin-top: 20px;
+    /* bằng với .mark-complete-btn */
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 1.5px solid #667eea;
+    color: #2d2a6b;
+    padding: 12px 18px;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.secondary-btn:hover {
+    background: #eef2ff;
+    transform: translateY(-1px);
+}
