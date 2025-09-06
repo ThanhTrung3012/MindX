@@ -13,6 +13,19 @@
         rel="stylesheet" />
     <!-- Thêm CSS cho avatar hình tròn và nhỏ lại -->
     <style>
+        /* Đảm bảo tất cả ảnh trong carousel có cùng kích cỡ, căn giữa, bo góc đẹp */
+        .slide-show {
+            width: 100%;
+            max-width: 1500px;
+            height: 700px;
+            object-fit: cover;
+            object-position: center;
+            margin: 0 auto;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+            display: block;
+        }
+
         .login-avatar {
             width: 64px;
             height: 64px;
@@ -277,13 +290,13 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="#">C</a>
+                                    <a class="dropdown-item" href="/html/C/C++/C.html">C</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">C++</a>
+                                    <a class="dropdown-item" href="/html/C/C++/C++.html">C++</a>
                                 </li>
                             </ul>
                         </li>
@@ -298,8 +311,7 @@
             </div>
         </nav>
     </div>
-
-    <!-- Hero Section -->
+      <!-- Hero Section
     <section class="hero">
         <div class="container">
             <div class="row justify-content-center text-center">
@@ -316,8 +328,32 @@
                 </div>
             </div>
         </div>
-    </section>
-
+    </section> -->
+    <!-- Carousel Section -->
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/img/art.png" class="d-block slide-show" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/coding.png" class="d-block slide-show" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/rbt.png" class="d-block slide-show" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/art2.jpg" class="d-block slide-show" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
     <!-- Courses Section -->
     <section id="courses" class="courses-section">
         <div class="container">
@@ -490,6 +526,7 @@
         </div>
     </section>
 
+
     <!-- Newsletter Section -->
     <section class="newsletter">
         <div class="container">
@@ -497,11 +534,12 @@
                 <div class="col-lg-8 text-center">
                     <h2>Cập nhật được ưu đãi theo tuần!</h2>
                     <p>
-                        Đăng ký để không bỏ lỡ những ưu đãi lớn,  nội dung mới và tài nguyên học tập
+                        Đăng ký để không bỏ lỡ những ưu đãi lớn, nội dung mới và tài nguyên học tập
                         hữu ích
                     </p>
                     <div class="newsletter-form">
-                        <input type="tel" class="form-control" id="newsletterPhone" placeholder="0924198157" required pattern="[0-9]{10,11}" />
+                        <input type="tel" class="form-control" id="newsletterPhone" placeholder="0924198157" required
+                            pattern="[0-9]{10,11}" />
                         <button class="btn" type="button" id="callBtn">
                             <i class="fas fa-phone-alt me-2"></i>Đăng ký (Gọi ngay)
                         </button>
@@ -527,27 +565,37 @@
             <div class="row align-items-center">
                 <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
                     <img src="/img/logo.svg" alt="MindX Logo" style="height: 48px; margin-bottom: 12px;">
-                    <h4 style="font-weight: 700; margin-bottom: 8px;">Mind<span class="mindx-x">X</span> Technology School</h4>
-                    <p style="font-size: 15px; color: #b0b8c1; margin-bottom: 0;">Nền tảng học lập trình & công nghệ cho thế hệ trẻ.</p>
+                    <h4 style="font-weight: 700; margin-bottom: 8px;">Mind<span class="mindx-x">X</span> Technology
+                        School</h4>
+                    <p style="font-size: 15px; color: #b0b8c1; margin-bottom: 0;">Nền tảng học lập trình & công nghệ cho
+                        thế hệ trẻ.</p>
                 </div>
                 <div class="col-md-4 text-center mb-4 mb-md-0">
                     <h5 style="font-weight: 600; margin-bottom: 12px;">Liên hệ</h5>
-                    <p style="margin-bottom: 6px; font-size: 15px; color: #b0b8c1;"><i class="fas fa-phone-alt me-2"></i> 0337355086 - Thành Trung</p>
-                    <p style="margin-bottom: 6px; font-size: 15px; color: #b0b8c1;"><i class="fas fa-envelope me-2"></i> dothanhtrung3112@gmail.com</p>
-                    <p style="margin-bottom: 0; font-size: 15px; color: #b0b8c1;"><i class="fas fa-map-marker-alt me-2"></i> A3 Vinhomes Gardenia Hà Nội</p>
+                    <p style="margin-bottom: 6px; font-size: 15px; color: #b0b8c1;"><i
+                            class="fas fa-phone-alt me-2"></i> 0337355086 - Thành Trung</p>
+                    <p style="margin-bottom: 6px; font-size: 15px; color: #b0b8c1;"><i class="fas fa-envelope me-2"></i>
+                        dothanhtrung3112@gmail.com</p>
+                    <p style="margin-bottom: 0; font-size: 15px; color: #b0b8c1;"><i
+                            class="fas fa-map-marker-alt me-2"></i> A3 Vinhomes Gardenia Hà Nội</p>
                 </div>
                 <div class="col-md-4 text-center text-md-end">
                     <h5 style="font-weight: 600; margin-bottom: 12px;">Kết nối với chúng tôi</h5>
-                    <a href="https://facebook.com/mindxschool" target="_blank" style="color: #fff; margin-right: 12px; font-size: 22px;"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.youtube.com/@mindxtechnologyschool9210" target="_blank" style="color: #fff; margin-right: 12px; font-size: 22px;"><i class="fab fa-youtube"></i></a>
-                    <a href="https://tiktok.com/@mindxschool" target="_blank" style="color: #fff; margin-right: 12px; font-size: 22px;"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://mindx.edu.vn" target="_blank" style="color: #fff; font-size: 22px;"><i class="fas fa-globe"></i></a>
+                    <a href="https://facebook.com/mindxschool" target="_blank"
+                        style="color: #fff; margin-right: 12px; font-size: 22px;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.youtube.com/@mindxtechnologyschool9210" target="_blank"
+                        style="color: #fff; margin-right: 12px; font-size: 22px;"><i class="fab fa-youtube"></i></a>
+                    <a href="https://tiktok.com/@mindxschool" target="_blank"
+                        style="color: #fff; margin-right: 12px; font-size: 22px;"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://mindx.edu.vn" target="_blank" style="color: #fff; font-size: 22px;"><i
+                            class="fas fa-globe"></i></a>
                 </div>
             </div>
             <hr style="border-color: #444; margin: 32px 0 16px 0;">
             <div class="row">
                 <div class="col-12 text-center">
-                    <p style="font-size: 14px; color: #b0b8c1; margin-bottom: 0;">© 2025 MindX Technology School. Thiết kế bởi Thành Trung TF & Tân Anh STL.</p>
+                    <p style="font-size: 14px; color: #b0b8c1; margin-bottom: 0;">© 2025 MindX Technology School. Thiết
+                        kế bởi Thành Trung TF & Tân Anh STL.</p>
                 </div>
             </div>
         </div>
@@ -855,7 +903,7 @@
             "học phí": "Học phí tùy khóa học, bạn có thể liên hệ 0924198157 để biết chi tiết.",
             "đăng ký học": "Bạn có thể đăng ký học tại website MindX hoặc liên hệ 0924198157 để được tư vấn.",
             "liên hệ": "Bạn có thể liên hệ qua số điện thoại 0924198157 - Tân Anh ",
-            "cảm ơn bạn" : "Không có gì! Nếu bạn cần thêm thông tin, cứ hỏi mình nhé.",
+            "cảm ơn bạn": "Không có gì! Nếu bạn cần thêm thông tin, cứ hỏi mình nhé.",
         };
 
         form.onsubmit = async function (e) {
@@ -911,7 +959,7 @@
         };
 
         // Newsletter: Ấn Đăng ký sẽ gọi số điện thoại nhập vào
-        document.getElementById('callBtn').onclick = function() {
+        document.getElementById('callBtn').onclick = function () {
             // Luôn lấy số từ placeholder, không lấy giá trị nhập
             const phone = document.getElementById('newsletterPhone').placeholder.trim();
             if (!phone.match(/^[0-9]{10,11}$/)) {

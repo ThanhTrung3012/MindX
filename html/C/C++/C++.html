@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C++ – Học nhanh từ cơ bản đến STL/OOP</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;color:#333;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+
+    /* Header */
+    .header{text-align:center;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+      border-radius:20px;padding:40px 20px;margin-bottom:30px;box-shadow:0 8px 32px rgba(0,0,0,.1);animation:slideDown .8s ease-out}
+    @keyframes slideDown{from{opacity:0;transform:translateY(-50px)}to{opacity:1;transform:translateY(0)}}
+    .header h1{font-size:2.6rem;background:linear-gradient(45deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+    .header p{font-size:1.1rem;color:#666}
+    .progress-bar{background:#e2e8f0;height:8px;border-radius:4px;overflow:hidden;margin:18px auto 0;max-width:680px}
+    .progress-fill{height:100%;background:linear-gradient(45deg,#667eea,#764ba2);width:0%;transition:width .8s ease}
+
+    /* Tabs */
+    .nav-tabs{display:flex;gap:10px;background:rgba(255,255,255,.96);border-radius:15px;padding:10px;margin-bottom:30px;box-shadow:0 8px 32px rgba(0,0,0,.1);overflow-x:auto}
+    .tab-button{flex:1;min-width:150px;padding:12px 16px;border:none;background:transparent;color:#666;font-size:1rem;font-weight:600;border-radius:10px;cursor:pointer;transition:all .3s ease;white-space:nowrap}
+    .tab-button:hover{background:rgba(102,126,234,.1);color:#667eea;transform:translateY(-2px)}
+    .tab-button.active{background:linear-gradient(45deg,#667eea,#764ba2);color:#fff;box-shadow:0 4px 15px rgba(102,126,234,.35)}
+
+    /* Sections */
+    .content-section{display:none;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-radius:20px;padding:34px;box-shadow:0 8px 32px rgba(0,0,0,.1);animation:fadeIn .6s ease-out}
+    .content-section.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    .section-title{font-size:1.9rem;color:#667eea;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+    .section-icon{width:40px;height:40px;background:linear-gradient(45deg,#667eea,#764ba2);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem}
+
+    .subsection{margin-bottom:24px;padding:22px;background:rgba(102,126,234,.06);border-radius:15px;border-left:4px solid #667eea;transition:all .3s ease}
+    .subsection:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(102,126,234,.12)}
+    .subsection h3{color:#667eea;margin-bottom:12px;font-size:1.2rem}
+    .subsection p,.subsection li{line-height:1.65;margin-bottom:8px}
+    .subsection ul{padding-left:20px}
+
+    /* Code block */
+    .code-block{background:#2d3748;color:#e2e8f0;padding:16px;border-radius:12px;margin:12px 0;overflow:auto;font-family:'Courier New',monospace;position:relative;border:1px solid #4a5568}
+    .code-block::before{content:'C++';position:absolute;top:10px;right:15px;background:#667eea;color:#fff;padding:2px 8px;border-radius:4px;font-size:.8rem;font-weight:700}
+    .code-block pre{margin:0;white-space:pre}
+    .copy-btn{position:absolute;top:10px;left:10px;background:#fff;color:#334155;border:1px solid #e2e8f0;border-radius:8px;padding:4px 10px;font-size:.8rem;cursor:pointer}
+    .copy-btn.ok{background:#22c55e;color:#fff;border-color:#22c55e}
+
+    .info-box{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:18px;border-radius:15px;margin:14px 0;box-shadow:0 8px 28px rgba(102,126,234,.25)}
+    .info-box h4{margin-bottom:8px;font-size:1.05rem}
+
+    .exercise-card{background:rgba(255,255,255,.9);border:2px solid #667eea;border-radius:15px;padding:16px;margin:12px 0;transition:all .25s ease;cursor:pointer}
+    .exercise-card:hover{transform:scale(1.01);box-shadow:0 8px 22px rgba(102,126,234,.2)}
+    .exercise-title{color:#667eea;font-weight:700;margin-bottom:8px}
+
+    .data-types-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+    .data-type-card{background:#fff;padding:18px;border-radius:12px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.08);transition:transform .3s ease}
+    .data-type-card:hover{transform:translateY(-4px)}
+    .data-type-name{font-weight:700;color:#667eea;font-size:1.05rem}
+
+    .toggle-button{background:linear-gradient(45deg,#667eea,#764ba2);color:#fff;border:none;padding:9px 16px;border-radius:24px;cursor:pointer;font-weight:700;margin:8px 0;transition:all .25s ease}
+    .toggle-button:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(102,126,234,.3)}
+    .hidden{display:none}
+
+    .footer{text-align:center;padding:34px;background:rgba(255,255,255,.96);border-radius:20px;margin-top:26px;box-shadow:0 8px 32px rgba(0,0,0,.1)}
+    .footer h3{color:#667eea;margin-bottom:10px}
+    .logo{display:inline-block;font-size:2rem;background:linear-gradient(45deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:8px}
+
+    @media (max-width:768px){.header h1{font-size:2rem}.nav-tabs{flex-direction:column}.tab-button{min-width:auto}.content-section{padding:24px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><span class="logo">⚡</span>C++ – Từ I/O đến STL & OOP</h1>
+      <p>Tài liệu một trang • Giao diện tab • Copy code một chạm</p>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <nav class="nav-tabs" id="nav">
+      <button class="tab-button active" onclick="showTab('io')">🔌 I/O & DataType</button>
+      <button class="tab-button" onclick="showTab('ops')">➗ Toán tử</button>
+      <button class="tab-button" onclick="showTab('cmath')">📐 Thư viện toán</button>
+      <button class="tab-button" onclick="showTab('branch')">🔀 Rẽ nhánh</button>
+      <button class="tab-button" onclick="showTab('quick')">⚡ Bài toán nhanh</button>
+      <button class="tab-button" onclick="showTab('loops')">🔁 Vòng lặp</button>
+      <button class="tab-button" onclick="showTab('func')">🧩 Hàm</button>
+      <button class="tab-button" onclick="showTab('typedef')">🏷️ Typedef/Define</button>
+      <button class="tab-button" onclick="showTab('arrays')">🗃️ Mảng</button>
+      <button class="tab-button" onclick="showTab('strings')">🔤 Chuỗi</button>
+      <button class="tab-button" onclick="showTab('struct')">🏗️ Struct/Enum/Pointer</button>
+      <button class="tab-button" onclick="showTab('memory')">💾 New/Delete</button>
+      <button class="tab-button" onclick="showTab('fileio')">📁 File I/O</button>
+      <button class="tab-button" onclick="showTab('oop')">🧠 OOP</button>
+      <button class="tab-button" onclick="showTab('stl')">📚 STL: Vector•Map•Set</button>
+    </nav>
+
+    <!-- 1. IO & Dtypes -->
+    <div id="io" class="content-section active">
+      <h2 class="section-title"><div class="section-icon">🔌</div>I/O, kiểu dữ liệu, biến</h2>
+      <div class="subsection">
+        <h3>📦 Thư viện và ví dụ cơ bản</h3>
+        <div class="info-box"><h4>Lưu ý:</h4><ul><li><code>#include &lt;iomanip&gt;</code> <b>không</b> có dấu chấm phẩy <code>;</code> phía sau.</li><li><code>using namespace std;</code> giúp code ngắn, nhưng trong dự án lớn nên hạn chế.</li></ul></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+        #include &lt;iostream&gt;
+        #include &lt;iomanip&gt;
+        using namespace std;
+        int main(){
+          cout << "xin chao!\n";
+          int a = 10, b = 20, c = 30;
+          cout << a << " " << b << " " << c << "\n";
+
+          int x, y, z;
+          cout << "Nhap x y z: ";
+          cin >> x >> y >> z;
+
+          double f1 = 1.2345, f2 = 3.14159;
+          cout << fixed << setprecision(2) << f1 << "\n";
+          cout << setprecision(3) << f2 << "\n";
+
+          char ch;
+          cin >> ch;
+          cout << ch << "\n";
+
+          bool ok = true;
+          cout << ok << "\n";
+          return 0;
+        }
+</pre></div>
+        <div class="data-types-grid">
+          <div class="data-type-card"><div class="data-type-name">int</div><p>4 bytes • -2B..2B</p></div>
+          <div class="data-type-card"><div class="data-type-name">long long</div><p>8 bytes</p></div>
+          <div class="data-type-card"><div class="data-type-name">float/double</div><p>4/8 bytes • số thực</p></div>
+          <div class="data-type-card"><div class="data-type-name">char</div><p>1 byte • 1 ký tự</p></div>
+          <div class="data-type-card"><div class="data-type-name">bool</div><p>true/false</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Operators -->
+    <div id="ops" class="content-section">
+      <h2 class="section-title"><div class="section-icon">➗</div>Toán tử</h2>
+      <div class="subsection">
+        <h3>Cộng/trừ/nhân/chia, ++/--, so sánh & logic</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          using namespace std; int main(){
+          int a = 100, b = 200;
+          cout << (a + b) << " " << (a - b) << " " << (a * b) << " " << (a / b) << " " << (a % b) << "\n";
+
+          int x = 100;
+          int y = x++;
+          cout << x << " " << y << "\n"; // 101 100
+
+          int u = 100;
+          int v = ++u;
+          cout << u << " " << v << "\n"; // 101 101
+
+          return 0;
+        }
+</pre></div>
+      </div>
+    </div>
+
+    <!-- 3. cmath -->
+    <div id="cmath" class="content-section">
+      <h2 class="section-title"><div class="section-icon">📐</div>Thư viện toán &lt;cmath&gt;</h2>
+      <div class="subsection">
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          #include &lt;cmath&gt; 
+          using namespace std; 
+          int main(){
+          int a = -100;
+          cout << abs(a) << "\n";          // 100
+          cout << pow(2.0, 3.0) << "\n";   // 8 (double)
+          cout << sqrt(4) << "\n";          // 2
+          cout << round(9.245) << "\n";     // 9
+          return 0;
+        }
+</pre></div>
+      </div>
+    </div>
+
+    <!-- 4. Branching -->
+    <div id="branch" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🔀</div>Rẽ nhánh: if/else • switch</h2>
+      <div class="subsection"><h3>BT1 – Chẵn/Lẻ</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          using namespace std;
+          int main() {
+            int n;
+            cin >> n;
+            cout << (n % 2 ? "le" : "chan");
+          }
+</pre></div></div>
+      <div class="subsection"><h3>BT2 – Học bổng</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          using namespace std; 
+          int main(){ 
+            int tuoi; 
+            float diem; 
+            cin&gt;&gt;tuoi&gt;&gt;diem; 
+            cout&lt;&lt;((tuoi&lt;18 &amp;&amp; diem&gt;8.0)?"Du":"Khong du"); }
+</pre></div></div>
+      <div class="subsection"><h3>switch–case (ngày trong tuần)</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>#include &lt;iostream&gt; using namespace std; int main(){ int day=4; switch(day){case 1:cout&lt;&lt;"Mon";break;case 2:cout&lt;&lt;"Tue";break;case 3:cout&lt;&lt;"Wed";break;case 4:cout&lt;&lt;"Thu";break;case 5:cout&lt;&lt;"Fri";break;case 6:cout&lt;&lt;"Sat";break;case 7:cout&lt;&lt;"Sun";break;default:cout&lt;&lt;"Invalid";} }
+#include <iostream>
+using namespace std;
+int main() {
+  int day = 4;
+  switch (day) {
+    case 1:
+      cout << "Mon";
+      break;
+    case 2:
+      cout << "Tue";
+      break;
+    case 3:
+      cout << "Wed";
+      break;
+    case 4:
+      cout << "Thu";
+      break;
+    case 5:
+      cout << "Fri";
+      break;
+    case 6:
+      cout << "Sat";
+      break;
+    case 7:
+      cout << "Sun";
+      break;
+    default:
+      cout << "Invalid";
+  }
+}
+</pre></div></div>
+    </div>
+
+    <!-- 5. Quick problems -->
+    <div id="quick" class="content-section">
+      <h2 class="section-title"><div class="section-icon">⚡</div>Bài toán tính nhanh</h2>
+      <div class="subsection"><h3>Chu vi & diện tích hình tròn</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          #include &lt;iomanip&gt; 
+          using namespace std; 
+          int main() {
+            int r;
+            cin >> r;
+            double pi = 3.14;
+            cout << fixed << setprecision(2) << 2 * pi * r << " " << pi * r * r;
+          }
+</pre></div></div>
+      <div class="subsection"><h3>Khoảng cách Euclid</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          #include &lt;cmath&gt; 
+          #include &lt;iomanip&gt; 
+          using namespace std; 
+          int main() {
+            int x1, y1, x2, y2;
+            cin >> x1 >> y1 >> x2 >> y2;
+            double d = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+            cout << fixed << setprecision(2) << d;
+          }
+</pre></div></div>
+      <div class="subsection"><h3>Đổi C → F</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          #include &lt;iomanip&gt; 
+          using namespace std; 
+          int main() {
+            long long C;
+            cin >> C;
+            double F = (double)C * 9 / 5 + 32;
+            cout << fixed << setprecision(2) << F;
+          }
+</pre></div></div>
+      <div class="subsection"><h3>Tổng 1..n</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;iostream&gt; 
+          using namespace std; 
+          int main() {
+            long long n;
+            cin >> n;
+            cout << (n * (n + 1)) / 2;
+          }
+          for (int i = 1; i <= 10; i++) {
+            cout << "Hello\n";
+          }
+          for (int i = 1; i <= 100; i++) {
+            if (i % 5 == 0)
+              cout << i << "\n";
+          }
+          for (int i = 1; i <= 100; i++) {
+            cout << i << "\n";
+            if (i == 40)
+              break;
+          }
+          int i = 0;
+          while (i < 5) {
+            cout << i << "\n";
+            i++;
+          }
+</pre></div></div>
+    </div>
+
+    <!-- 6. Loops -->
+    <div id="loops" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🔁</div>Vòng lặp</h2>
+      <div class="subsection"><h3>For cơ bản</h3><div class="code-block"><button class="copy-btn">Copy</button><pre>
+        for (int i = 1; i <= 10; i++) {
+          cout << "Hello\n";
+        }
+      </pre></div></div>
+      <div class="subsection"><h3>In số chia hết cho 5 (1..100)</h3><div class="code-block"><button class="copy-btn">Copy</button><pre>
+        for (int i = 1; i <= 100; i++) {
+          if (i % 5 == 0)
+            cout << i << "\n";
+          }
+      </pre></div></div>
+      <div class="subsection"><h3>break vòng lặp</h3><div class="code-block"><button class="copy-btn">Copy</button><pre>
+        for (int i = 1; i <= 100; i++) {
+          cout << i << "\n";
+          if (i == 40)
+            break;
+        }
+      </pre></div></div>
+      <div class="subsection"><h3>while khi chưa biết số lần lặp</h3><div class="code-block"><button class="copy-btn">Copy</button><pre>
+        int i = 0;
+        while (i < 5) {
+          cout << i << "\n";
+          i++;
+        }
+      </pre></div></div>
+    </div>
+
+    <!-- 7. Functions -->
+    <div id="func" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🧩</div>Hàm</h2>
+      <div class="subsection"><h3>Hàm void & tham số</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          void xinchao(){
+            cout &lt;&lt; "CSA06(1:1)\n"; }
+          int main(){ 
+            xinchao(); 
+          }
+          void xinchao() {
+            cout << "CSA06(1:1)\n";
+          }
+          int main() {
+            xinchao();
+          }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+        void xinchao(int n,float b,char c){ 
+          cout&lt;&lt;n&lt;&lt;" "&lt;&lt;b&lt;&lt;" "&lt;&lt;c&lt;&lt;"\n"; }
+        int main(){ 
+          xinchao(20,2.5,'@'); 
+        }
+        void xinchao(int n, float b, char c) {
+          cout << n << " " << b << " " << c << "\n";
+        }
+        int main() {
+          xinchao(20, 2.5, '@');
+        }
+</pre></div>
+      </div>
+      <div class="subsection"><h3>Bài luyện tập</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+        void displayNumber(int a,int b,int c){ 
+          cout&lt;&lt;b&lt;&lt;" "&lt;&lt;a&lt;&lt;" "&lt;&lt;c&lt;&lt;"\n"; 
+          cout&lt;&lt;(a+b+c)&lt;&lt;"\n"; 
+          cout&lt;&lt;"Ket thuc!\n"; 
+        }
+        int main(){ 
+          int a,b,c; 
+          cin&gt;&gt;a&gt;&gt;b&gt;&gt;c; 
+          displayNumber(a,b,c); 
+        }
+        void displayNumber(int a, int b, int c) {
+          cout << b << " " << a << " " << c << "\n";
+          cout << (a + b + c) << "\n";
+          cout << "Ket thuc!\n";
+        }
+        int main() {
+          int a, b, c;
+          cin >> a >> b >> c;
+          displayNumber(a, b, c);
+        }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+        long long tong(long long n){ 
+          return n*(n+1)/2; 
+        }
+        int main(){ 
+          cout &lt;&lt; 
+          tong(10); }
+        long long tong(long long n) {
+          return n * (n + 1) / 2;
+        }
+        int main() {
+          cout << tong(10);
+        }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+        double harmonic(int n){ 
+          double res=0; 
+          for(int i=1;i&lt;=n;i++) 
+            res += 1.0/i; 
+          return res; }
+        int main(){ 
+          cout&lt;&lt;fixed&lt;&lt;setprecision(6)&lt;&lt;harmonic(10); 
+        }
+        double harmonic(int n) {
+          double res = 0;
+          for (int i = 1; i <= n; i++)
+            res += 1.0 / i;
+          return res;
+        }
+        int main() {
+          cout << fixed << setprecision(6) << harmonic(10);
+        }
+</pre></div>
+      </div>
+    </div>
+
+    <!-- 8. typedef/define -->
+    <div id="typedef" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🏷️</div>Typedef & # Define</h2>
+      <div class="subsection"><div class="code-block"><button class="copy-btn">Copy</button><pre>
+      typedef long long ll; 
+      typedef int songuyen;
+      #define PI 3.14
+      #define MOD 1000000007
+      typedef long long ll;
+      typedef int songuyen;
+      #define PI 3.14
+      #define MOD 1000000007
+      </pre></div></div>
+    </div>
+
+    <!-- 9. Arrays -->
+    <div id="arrays" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🗃️</div>Mảng 1D & 2D</h2>
+      <div class="subsection"><h3>Mảng 1 chiều</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          int a[6]={1,2,4,3,5,6}; 
+          cout &lt;&lt; a[2]; // 4
+          int a[6] = {1, 2, 4, 3, 5, 6};
+          cout << a[2]; // 4
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          int n; cin&gt;&gt;n; 
+          vector&lt;int&gt; 
+          a(n); 
+          for(int i=0;i&lt;n;i++) 
+            cin&gt;&gt;a[i]; 
+          for(int i=0;i&lt;n;i++) 
+            cout&lt;&lt;a[i]&lt;&lt;" ";
+          int n;
+          cin >> n;
+          vector<int> a(n);
+          for (int i = 0; i < n; i++)
+            cin >> a[i];
+          for (int i = 0; i < n; i++)
+            cout << a[i] << " ";
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          int n; cin&gt;&gt;n; 
+          long long sum=0; 
+          for(int i=0,x;i&lt;n;i++){ 
+            cin&gt;&gt;x; 
+            sum+=x; 
+          } 
+          cout&lt;&lt;sum;
+          int n;
+          cin >> n;
+          long long sum = 0;
+          for (int i = 0, x; i < n; i++) {
+            cin >> x;
+            sum += x;
+          }
+          cout << sum;
+</pre></div>
+      </div>
+      <div class="subsection"><h3>Mảng 2 chiều</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          int n,m; cin&gt;&gt;n&gt;&gt;m; 
+          vector&lt;vector&lt;int&gt;&gt; 
+          a(n, vector&lt;int&gt;(m));
+          for(int i=0;i&lt;n;i++) 
+            for(int j=0;j&lt;m;j++) 
+              cin&gt;&gt;a[i][j];
+          for(int i=0;i&lt;n;i++){ 
+            for(int j=0;j&lt;m;j++) 
+              cout&lt;&lt;a[i][j]; 
+          cout&lt;&lt;"\n"; }
+          int n, m;
+          cin >> n >> m;
+          vector<vector<int>> a(n, vector<int>(m));
+          for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+              cin >> a[i][j];
+          for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++)
+              cout << a[i][j];
+            cout << "\n";
+          }
+</pre></div>
+      </div>
+    </div>
+
+    <!-- 10. Strings -->
+    <div id="strings" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🔤</div>Chuỗi (string)</h2>
+      <div class="subsection"><h3>Nhập không/ có khoảng trắng</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          string s; 
+          cin &gt;&gt; s; 
+          cout &lt;&lt; s &lt;&lt; "\n"; // dừng ở space
+          string s;
+          cin >> s;
+          cout << s << "\n"; // dừng ở space
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          string s; 
+          getline(cin,s); 
+          cout &lt;&lt; 
+          s &lt;&lt; "\n"; // nguyên dòng
+          string s;
+          getline(cin, s);
+          cout << s << "\n"; // nguyên dòng
+</pre></div>
+        <div class="info-box"><h4>Mẹo:</h4><p>Nếu trước đó có <code>cin &gt;&gt; n</code>, hãy thêm <code>cin.ignore()</code> trước <code>getline</code>.</p></div>
+      </div>
+      <div class="subsection"><h3>Độ dài & duyệt ký tự</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          string s = "PYTHON"; 
+          cout &lt;&lt; 
+          s.length() &lt;&lt; "\n"; 
+          for(size_t i=0;i&lt;s.size();++i) 
+            cout&lt;&lt;s[i]&lt;&lt;"\n";
+          string s = "PYTHON";
+          cout << s.length() << "\n";
+          for (size_t i = 0; i < s.size(); ++i)
+            cout << s[i] << "\n";
+</pre></div>
+      </div>
+    </div>
+
+    <!-- 11. struct/enum/pointer -->
+    <div id="struct" class="content-section">
+      <h2 class="section-title"><div class="section-icon">🏗️</div>struct • enum • con trỏ</h2>
+      <div class="subsection"><h3>struct & enum</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          struct Sinhvien{ string ten; int tuoi; double gpa; };
+          int main(){ 
+            Sinhvien sv1={"Trung",26,4.2}; 
+            cout&lt;&lt;sv1.ten&lt;&lt;" "&lt;&lt;sv1.tuoi&lt;&lt;" "&lt;&lt;sv1.gpa; }
+          struct Sinhvien {
+            string ten;
+            int tuoi;
+            double gpa;
+          };
+          int main() {
+            Sinhvien sv1 = {"Trung", 26, 4.2};
+            cout << sv1.ten << " " << sv1.tuoi << " " << sv1.gpa;
+          }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          enum Thu{Hai=2,Ba,Tu,Nam,Sau,Bay,ChuNhat};
+          int main(){ 
+            Thu homnay=Ba; 
+            if(homnay==Ba) 
+              cout&lt;&lt;"Thu 3"; }
+          enum Thu { Hai = 2, Ba, Tu, Nam, Sau, Bay, ChuNhat };
+          int main() {
+            Thu homnay = Ba;
+            if (homnay == Ba)
+              cout << "Thu 3";
+          }
+</pre></div>
+      </div>
+      <div class="subsection"><h3>Con trỏ hàm & con trỏ mảng</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          int tong(int a,int b){
+            return a+b;
+          } 
+          int tich(int a,int b){
+            return a*b;
+          }
+        int tinh_toan(int x,int y,int(*op)(int,int)){return op(x,y);} 
+        int main(){ cout&lt;&lt;tinh_toan(2,5,tong)&lt;&lt;"\n"&lt;&lt;tinh_toan(2,5,tich); }
+        int tong(int a, int b) {
+          return a + b;
+        }
+        int tich(int a, int b) {
+          return a * b;
+        }
+        int tinh_toan(int x, int y, int(*op)(int, int)) {
+          return op(x, y);
+        }
+        int main() {
+          cout << tinh_toan(2, 5, tong) << "\n" << tinh_toan(2, 5, tich);
+        }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          int arr[5]={1,2,3,4,5}; 
+          int *p=arr; 
+          cout&lt;&lt;*p&lt;&lt;"\n"; 
+          cout&lt;&lt;*(p+2)&lt;&lt;"\n"; 
+          for(int i=0;i&lt;5;i++) 
+          cout&lt;&lt;*(p+i)&lt;&lt;" ";
+          int arr[5] = {1, 2, 3, 4, 5};
+          int *p = arr;
+          cout << *p << "\n";
+          cout << *(p + 2) << "\n";
+          for (int i = 0; i < 5; i++)
+            cout << *(p + i) << " ";
+          int n;
+          cin >> n;
+          int *arr = new int[n];
+          for (int i = 0; i < n; i++)
+            arr[i] = (i + 1) * 10;
+          for (int i = 0; i < n; i++)
+            cout << arr[i] << " ";
+          delete[] arr;
+          </pre></div>
+      </div>
+    </div>
+
+    <!-- 12. Memory -->
+    <div id="memory" class="content-section">
+      <h2 class="section-title"><div class="section-icon">💾</div>Bộ nhớ động (new/delete)</h2>
+      <div class="subsection"><div class="code-block"><button class="copy-btn">Copy</button><pre>
+        int n; 
+        cin&gt;&gt;n; 
+        int *arr=new int[n]; 
+        for(int i=0;i&lt;n;i++) 
+          arr[i]=(i+1)*10; 
+        for(int i=0;i&lt;n;i++) 
+          cout&lt;&lt;arr[i]&lt;&lt;" "; 
+        delete[] arr;
+</pre></div></div>
+    </div>
+
+    <!-- 13. File IO -->
+    <div id="fileio" class="content-section">
+      <h2 class="section-title"><div class="section-icon">📁</div>Đọc/Ghi file – ví dụ Sinh viên</h2>
+      <div class="subsection"><div class="code-block"><button class="copy-btn">Copy</button><pre>
+        #include &lt;iostream&gt; 
+        #include &lt;fstream&gt; 
+        #include &lt;vector&gt; 
+        #include &lt;string&gt; 
+        using namespace std;
+        struct SV{ 
+          string name, msv; 
+          int age; 
+          float gpa; };
+        string getProjectPath(){ 
+          string p=__FILE__; 
+          size_t k=p.find_last_of("/\\"); 
+          return p.substr(0,k); }
+        int main(){ 
+          int n; cin&gt;&gt;n; 
+          cin.ignore(); 
+          vector&lt;SV&gt; a(n); 
+          for(int i=0;i&lt;n;i++){ 
+            getline(cin,a[i].msv); 
+            getline(cin,a[i].name); 
+            cin&gt;&gt;a[i].age&gt;&gt;a[i].gpa; 
+            cin.ignore(); 
+          }
+        string fn=getProjectPath()+"/sinhvien.txt"; 
+        ofstream out(fn); 
+        for(auto &s:a) out&lt;&lt;s.msv&lt;&lt;","&lt;&lt;s.name&lt;&lt;","&lt;&lt;s.age&lt;&lt;","&lt;&lt;s.gpa&lt;&lt;"\n"; 
+        out.close(); 
+        ifstream in(fn); 
+        string line; 
+        while(getline(in,line)) 
+          cout&lt;&lt;line&lt;&lt;"\n"; }
+        #include <iostream>
+        #include <fstream>
+        #include <vector>
+        #include <string>
+        using namespace std;
+        struct SV {
+          string name, msv;
+          int age;
+          float gpa;
+        };
+        string getProjectPath() {
+          string p = __FILE__;
+          size_t k = p.find_last_of("/\\");
+          return p.substr(0, k);
+        }
+        int main() {
+          int n;
+          cin >> n;
+          cin.ignore();
+          vector<SV> a(n);
+          for (int i = 0; i < n; i++) {
+            getline(cin, a[i].msv);
+            getline(cin, a[i].name);
+            cin >> a[i].age >> a[i].gpa;
+            cin.ignore();
+          }
+          string fn = getProjectPath() + "/sinhvien.txt";
+          ofstream out(fn);
+          for (auto &s : a)
+            out << s.msv << "," << s.name << "," << s.age << "," << s.gpa << "\n";
+          out.close();
+          ifstream in(fn);
+          string line;
+          while (getline(in, line))
+            cout << line << "\n";
+        }
+  </pre></div></div>
+      </div>
+
+      <!-- 14. OOP -->
+      <div id="oop" class="content-section">
+        <h2 class="section-title"><div class="section-icon">🧠</div>OOP cơ bản</h2>
+        <div class="subsection"><h3>Rectangle</h3>
+          <div class="code-block"><button class="copy-btn">Copy</button><pre>
+            class Rectangle{ 
+              double w,h; 
+              public: Rectangle(double W,double H):w(W),h(H){} 
+              double area(){return w*h;} 
+              double perimeter(){
+                return 2*(w+h);
+              } 
+              void display(){ 
+                cout&lt;&lt;"W:"&lt;&lt;w&lt;&lt;" H:"&lt;&lt;h&lt;&lt;"\n"; 
+                cout&lt;&lt;"Area:"&lt;&lt;area()&lt;&lt;"\nPerim:"&lt;&lt;perimeter(); } };
+              int main(){ 
+                Rectangle r(5,3); 
+                r.display(); }
+              class Rectangle {
+                double w, h;
+              public:
+                Rectangle(double W, double H) : w(W), h(H) {}
+                double area() { return w * h; }
+                double perimeter() { return 2 * (w + h); }
+                void display() {
+                  cout << "W:" << w << " H:" << h << "\n";
+                  cout << "Area:" << area() << "\nPerim:" << perimeter();
+                }
+              };
+              int main() {
+                Rectangle r(5, 3);
+                r.display();
+              }
+              </pre></div></div>
+                    <div class="subsection"><h3>Student – phân loại</h3>
+                      <div class="code-block"><button class="copy-btn">Copy</button><pre>class Student{ string name; double score; public: Student(string n,double s):name(n),score(s){} string classify(){ if(score&gt;=8) return "Gioi"; else if(score&gt;=6.5) return "Kha"; else if(score&gt;=5) return "TB"; else return "Yeu"; } };
+              class Student {
+                string name;
+                double score;
+              public:
+                Student(string n, double s) : name(n), score(s) {}
+                string classify() {
+                  if (score >= 8) return "Gioi";
+                  else if (score >= 6.5) return "Kha";
+                  else if (score >= 5) return "TB";
+                  else return "Yeu";
+                }
+            };
+</pre></div></div>
+      <div class="subsection"><h3>Constructor/Destructor • Kế thừa • Đa hình</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          class Book{ 
+            string title,author; 
+            double price; public: 
+            Book(string t,string a,double p):title(t),author(a),price(p){ 
+              cout&lt;&lt;"Tao: "&lt;&lt;title&lt;&lt;"\n"; } };
+          class Car{ 
+          string brand; 
+            public: Car(string b):brand(b){ 
+              cout&lt;&lt;"Xe "&lt;&lt;brand&lt;&lt;" tao\n"; 
+            } 
+            ~Car(){ 
+              cout&lt;&lt;"Xe "&lt;&lt;brand&lt;&lt;" xoa\n"; 
+            } };
+          class Person{ 
+            public: string name; 
+            void introduce(){
+              cout&lt;&lt;"I am "&lt;&lt;name&lt;&lt;"\n"; 
+              } };
+          class StudentP: 
+          public Person{ 
+            public: void study(){ 
+              cout&lt;&lt;name&lt;&lt;" is studying\n"; 
+            } };
+          class Animal{ 
+            public: virtual void sound(){ 
+              cout&lt;&lt;"Dong vat keu...\n"; 
+            } };
+          class Dog: public Animal{ 
+            public: void sound() override { 
+              cout&lt;&lt;"Gau gau!\n"; 
+            } };
+          class Book {
+            string title, author;
+            double price;
+          public:
+            Book(string t, string a, double p) : title(t), author(a), price(p) {
+              cout << "Tao: " << title << "\n";
+            }
+          };
+          class Car {
+            string brand;
+          public:
+            Car(string b) : brand(b) {
+              cout << "Xe " << brand << " tao\n";
+            }
+            ~Car() {
+              cout << "Xe " << brand << " xoa\n";
+            }
+          };
+          class Person {
+          public:
+            string name;
+            void introduce() {
+              cout << "I am " << name << "\n";
+            }
+          };
+          class StudentP : public Person {
+          public:
+            void study() {
+              cout << name << " is studying\n";
+            }
+          };
+          class Animal {
+          public:
+            virtual void sound() {
+              cout << "Dong vat keu...\n";
+            }
+          };
+          class Dog : public Animal {
+          public:
+            void sound() override {
+              cout << "Gau gau!\n";
+            }
+          };
+</pre></div>
+      </div>
+    </div>
+
+    <!-- 15. STL -->
+    <div id="stl" class="content-section">
+      <h2 class="section-title"><div class="section-icon">📚</div>STL: vector • map • set</h2>
+      <div class="subsection"><h3>Giải thích nhanh</h3>
+        <div class="info-box"><h4>Tổng quan</h4><ul><li><b>vector</b>: mảng động, truy cập theo chỉ số, tiện thêm/xóa cuối.</li><li><b>map</b>: cặp key→value, sắp xếp theo key, tìm O(log n).</li><li><b>set</b>: giá trị duy nhất, tự sắp xếp.</li></ul></div>
+      </div>
+      <div class="subsection"><h3>Ví dụ</h3>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;vector&gt; 
+          using namespace std; 
+          int main() {
+            vector<double> scores;
+            int n;
+            cin >> n;
+            for (int i = 0; i < n; i++) {
+              double d;
+              cin >> d;
+              scores.push_back(d);
+            }
+            double sum = 0;
+            for (double d : scores)
+              sum += d;
+            cout << (n ? sum / n : 0);
+          }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;map&gt; 
+          #include &lt;string&gt; 
+          using namespace std; 
+          int main() {
+            map<string, string> dict;
+            dict["hello"] = "xin chao";
+            string w;
+            cin >> w;
+            if (dict.count(w))
+              cout << dict[w];
+            else
+              cout << "Khong tim thay";
+          }
+</pre></div>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre>
+          #include &lt;set&gt; 
+          using namespace std; 
+          int main() {
+            set<int> s;
+            int n, x;
+            cin >> n;
+            for (int i = 0; i < n; i++) {
+              cin >> x;
+              s.insert(x);
+            }
+            for (int v : s)
+              cout << v << " ";
+          }
+</pre></div>
+      </div>
+      <div class="subsection"><h3>Gợi ý bài tập</h3>
+        <ul>
+          <li><b>vector</b>: tổng, TB, min/max, đảo mảng, tìm tên "An".</li>
+          <li><b>map</b>: đếm từ; quản lý giá sản phẩm; HS điểm cao nhất.</li>
+          <li><b>set</b>: lọc email trùng; hợp/giao/hiệu; kiểm tra phần tử.</li>
+          <li><b>Tổng hợp</b>: quản lý SV (vector+map+set), giỏ hàng cửa hàng.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <h3>🚀 Sẵn sàng luyện C++ mỗi ngày?</h3>
+      <p>Học theo tab từ trái sang phải • Thử chạy từng ví dụ • Ghi chú lỗi thường gặp</p>
+    </div>
+  </div>
+
+  <script>
+    const tabs = ['io','ops','cmath','branch','quick','loops','func','typedef','arrays','strings','struct','memory','fileio','oop','stl'];
+    function showTab(id){
+      document.querySelectorAll('.tab-button').forEach(btn=>btn.classList.toggle('active', btn.getAttribute('onclick').includes(id)));
+      document.querySelectorAll('.content-section').forEach(s=>s.classList.toggle('active', s.id===id));
+      const idx = tabs.indexOf(id); const fill = document.getElementById('progressFill'); if(fill) fill.style.width = ((idx+1)/tabs.length*100).toFixed(0)+'%';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function toggleContent(id){ const el=document.getElementById(id); if(!el) return; el.classList.toggle('hidden'); }
+
+    // Copy buttons
+    document.addEventListener('click', async (e)=>{
+      if(e.target.classList.contains('copy-btn')){
+        const pre = e.target.nextElementSibling; const code = pre ? pre.innerText : '';
+        try{ await navigator.clipboard.writeText(code); e.target.classList.add('ok'); e.target.textContent='Đã copy'; setTimeout(()=>{e.target.classList.remove('ok'); e.target.textContent='Copy';},1200);}catch(err){ e.target.textContent='Lỗi'; }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', ()=>{ showTab('io'); setTimeout(()=>{ const fill=document.getElementById('progressFill'); if(fill) fill.style.width='7%'; }, 300); });
+  </script>
+</body>
+</html>

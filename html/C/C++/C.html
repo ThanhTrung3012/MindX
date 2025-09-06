@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Học Lập Trình C cho Hệ Thống Nhúng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            gap: 10px;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .content-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .subsection {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .subsection:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .subsection h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .subsection p,
+        .subsection li {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .subsection ul {
+            padding-left: 20px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            border: 1px solid #4a5568;
+        }
+
+        .code-block::before {
+            content: 'C';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #667eea;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .info-box h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .exercise-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .exercise-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .exercise-title {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .data-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .data-type-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .data-type-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .data-type-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+
+        .toggle-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            display: inline-block;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                min-width: auto;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="logo">⚡</span>Học Lập Trình C cho Hệ Thống Nhúng</h1>
+            <p>Từ cơ bản đến nâng cao - Trở thành kỹ sư hệ thống nhúng chuyên nghiệp</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('intro')">🎯 Giới Thiệu</button>
+            <button class="tab-button" onclick="showTab('setup')">⚙️ Cài Đặt</button>
+            <button class="tab-button" onclick="showTab('week1')">📚 Tuần 1</button>
+            <button class="tab-button" onclick="showTab('week2')">🔄 Tuần 2</button>
+            <button class="tab-button" onclick="showTab('week3')">🚀 Tuần 3</button>
+            <button class="tab-button" onclick="showTab('exercises')">💻 Bài Tập</button>
+        </nav>
+
+        <!-- Giới thiệu -->
+        <div id="intro" class="content-section active">
+            <h2 class="section-title">
+                <div class="section-icon">🎯</div>Kỹ Sư Hệ Thống Nhúng
+            </h2>
+            <div class="subsection">
+                <h3>🔧 Hệ Thống Nhúng Là Gì?</h3>
+                <p><strong>Nhúng</strong> có nghĩa là tích hợp sâu một hệ thống máy tính vào bên trong thiết bị để nó
+                    hoạt động âm thầm.</p>
+                <div class="info-box">
+                    <h4>📱 Ví Dụ Thực Tế:</h4>
+                    <ul>
+                        <li><strong>Máy giặt hiện đại:</strong> Bảng điều khiển điện tử, cảm biến nước, chương trình
+                            giặt</li>
+                        <li><strong>Ô tô:</strong> Hệ thống phanh ABS, điều khiển động cơ, cảm biến va chạm</li>
+                        <li><strong>Điện thoại thông minh:</strong> Cảm biến vân tay, camera, GPS</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🌐 Lĩnh Vực Ứng Dụng</h3>
+                <ul>
+                    <li><strong>Công nghiệp:</strong> Điều khiển máy móc, robot sản xuất</li>
+                    <li><strong>IoT (Internet of Things):</strong> Thiết bị thông minh kết nối internet</li>
+                    <li><strong>Lập trình vi điều khiển:</strong> STM32, Arduino, ESP32</li>
+                    <li><strong>Thiết kế mạch điện:</strong> Kết hợp cảm biến và thiết bị ngoại vi</li>
+                    <li><strong>Phát triển firmware:</strong> Robot, ô tô thông minh, thiết bị y tế</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <h3>💻 Tại Sao Học C/C++?</h3>
+                <div class="info-box">
+                    <h4>🎯 Lý Do Quan Trọng:</h4>
+                    <ul>
+                        <li><strong>C là ngôn ngữ "sát phần cứng"</strong> - điều khiển trực tiếp vi điều khiển</li>
+                        <li><strong>C++</strong> hỗ trợ lập trình hướng đối tượng cho dự án lớn</li>
+                        <li><strong>90% thiết bị nhúng</strong> sử dụng C/C++</li>
+                        <li><strong>Vi điều khiển phổ biến:</strong> STM32, Arduino, ESP32</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🏭 Kỹ Sư Thiết Kế IC</h3>
+                <p>Thiết kế vi mạch tích hợp (IC) là công việc tạo ra các chip bán dẫn dùng trong máy tính, điện thoại,
+                    thiết bị số.</p>
+                <ul>
+                    <li><strong>Ứng dụng:</strong> CPU, GPU, chip AI, bộ nhớ (RAM, ROM)</li>
+                    <li><strong>Công ty lớn:</strong> Intel, Samsung, NVIDIA, Apple, Renesas, Synopsys</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Cài đặt -->
+        <div id="setup" class="content-section">
+            <h2 class="section-title">
+                <div class="section-icon">⚙️</div>Cài Đặt Môi Trường
+            </h2>
+            <div class="subsection">
+                <h3>🔧 Cài Đặt Visual Studio Code</h3>
+                <div class="exercise-card">
+                    <div class="exercise-title">Các Bước Cài Đặt:</div>
+                    <ul>
+                        <li><strong>Bước 1:</strong> Cài Visual Studio Code</li>
+                        <li><strong>Bước 2:</strong> Cài Extension C/C++</li>
+                        <li><strong>Bước 3:</strong> Cài Extension Code Runner</li>
+                        <li><strong>Bước 4:</strong> Kiểm tra môi trường với lệnh: <code>g++ --version</code></li>
+                        <li><strong>Bước 5:</strong> Nếu chưa có, cài compiler từ: <a
+                                href="https://code.visualstudio.com/docs/languages/cpp"
+                                target="_blank">https://code.visualstudio.com/docs/languages/cpp</a></li>
+                    </ul>
+                </div>
+                <div class="subsection">
+                    <h3>✅ Kiểm Tra Cài Đặt</h3>
+                    <p>Chạy chương trình Hello World để kiểm tra:</p>
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    printf("Hello World");
+    return 0;
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuần 1 -->
+        <div id="week1" class="content-section">
+            <h2 class="section-title">
+                <div class="section-icon">📚</div>Tuần 1: Làm Quen Với C
+            </h2>
+            <div class="subsection">
+                <h3>🏗️ Cấu Trúc Chương Trình C</h3>
+                <p>Mọi chương trình C đều bắt đầu từ hàm <strong>main()</strong> - hàm được chạy đầu tiên.</p>
+                <div class="info-box">
+                    <h4>📋 Cấu Trúc Gồm 2 Phần:</h4>
+                    <ul>
+                        <li><strong>Thư viện:</strong> Code có sẵn được include vào</li>
+                        <li><strong>Chương trình:</strong> Code do mình viết trong hàm main</li>
+                    </ul>
+                </div>
+                <div class="code-block">
+                    <pre>#include &lt;stdio.h&gt;  // Thư viện
+int main() {         // Hàm main
+    printf("Hello World");  // Câu lệnh
+    return 0;        // Kết thúc chương trình
+}</pre>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>📊 Kiểu Dữ Liệu Trong C</h3>
+                <div class="data-types-grid">
+                    <div class="data-type-card">
+                        <div class="data-type-name">int</div>
+                        <p>Số nguyên<br>4 bytes<br>%d, %i</p>
+                    </div>
+                    <div class="data-type-card">
+                        <div class="data-type-name">long long</div>
+                        <p>Số nguyên lớn<br>8 bytes<br>%lld</p>
+                    </div>
+                    <div class="data-type-card">
+                        <div class="data-type-name">char</div>
+                        <p>Ký tự<br>1 byte<br>%c</p>
+                    </div>
+                    <div class="data-type-card">
+                        <div class="data-type-name">float</div>
+                        <p>Số thực<br>4 bytes<br>%f</p>
+                    </div>
+                    <div class="data-type-card">
+                        <div class="data-type-name">double</div>
+                        <p>Số thực lớn<br>8 bytes<br>%lf</p>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🔧 Biến và Toán Tử</h3>
+                <button class="toggle-button" onclick="toggleContent('variables-content')">Xem Ví Dụ Biến</button>
+                <div id="variables-content" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int a = 1000;
+    float b = 100.25f;
+    char c = 'A';
+
+    printf("So nguyen: %d\n", a);
+    printf("So thuc: %.2f\n", b);
+    printf("Ky tu: %c\n", c);
+    return 0;
+}</pre>
+                    </div>
+                </div>
+                <button class="toggle-button" onclick="toggleContent('operators-content')">Xem Toán Tử</button>
+                <div id="operators-content" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int a = 300, b = 200;
+    printf("Tong: %d\n", a + b);
+    printf("Hieu: %d\n", a - b);
+    printf("Tich: %d\n", a * b);
+    printf("Thuong: %d\n", a / b);
+    printf("Du: %d\n", a % b);
+    return 0;
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuần 2 -->
+        <div id="week2" class="content-section">
+            <h2 class="section-title">
+                <div class="section-icon">🔄</div>Tuần 2: Điều Khiển & Vòng Lặp
+            </h2>
+            <div class="subsection">
+                <h3>🔀 Câu Lệnh Điều Kiện</h3>
+                <div class="exercise-card" onclick="toggleContent('if-example')">
+                    <div class="exercise-title">📝 IF - ELSE IF - ELSE</div>
+                    <p>Phân loại học lực theo điểm trung bình</p>
+                </div>
+                <div id="if-example" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    float dtb;
+    printf("Nhap diem trung binh: ");
+    scanf("%f", &dtb);
+
+    if (dtb &gt;= 8.0f) {
+        printf("Hoc luc: Gioi\n");
+    } else if (dtb &gt;= 6.5f) {
+        printf("Hoc luc: Kha\n");
+    } else if (dtb &gt;= 5.0f) {
+        printf("Hoc luc: Trung binh\n");
+    } else {
+        printf("Hoc luc: Yeu\n");
+    }
+    return 0;
+}</pre>
+                    </div>
+                </div>
+                <div class="exercise-card" onclick="toggleContent('switch-example')">
+                    <div class="exercise-title">🔢 SWITCH CASE</div>
+                    <p>Máy tính đơn giản với các phép toán cơ bản</p>
+                </div>
+                <div id="switch-example" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int a = 100, b = 200;
+    char kitu;
+    printf("Nhap phep tinh (+, -, *, /): ");
+    scanf("%c", &kitu);
+
+    switch (kitu) {
+        case '+': printf("Tong: %d\n", a + b); break;
+        case '-': printf("Hieu: %d\n", a - b); break;
+        case '*': printf("Tich: %d\n", a * b); break;
+        case '/': printf("Thuong: %d\n", a / b); break;
+        default:  printf("Phep tinh khong hop le\n");
+    }
+    return 0;
+}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🔁 Vòng Lặp FOR</h3>
+                <div class="info-box">
+                    <h4>📝 Cú Pháp:</h4><code>for (khoi_tao; dieu_kien; thay_doi) { ... }</code>
+                </div>
+                <div class="exercise-card" onclick="toggleContent('for-example')">
+                    <div class="exercise-title">🧮 Tính Tổng 1 đến N</div>
+                    <p>Sử dụng vòng lặp for để tính tổng</p>
+                </div>
+                <div id="for-example" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int n, sum = 0;
+    printf("Nhap n: ");
+    scanf("%d", &n);
+
+    for (int i = 1; i &lt;= n; i++) sum += i;
+
+    printf("Tong tu 1 den %d la: %d\n", n, sum);
+    return 0;
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuần 3 -->
+        <div id="week3" class="content-section">
+            <h2 class="section-title">
+                <div class="section-icon">🚀</div>Tuần 3: Hàm, Mảng & Struct
+            </h2>
+            <div class="subsection">
+                <h3>⚡ Hàm (Functions)</h3>
+                <p>Chia chương trình thành nhiều phần nhỏ để dễ quản lý và tái sử dụng.</p>
+                <div class="exercise-card" onclick="toggleContent('function-example')">
+                    <div class="exercise-title">🔧 Hàm Tìm Số Lớn Nhất</div>
+                    <p>Tạo hàm so sánh hai số</p>
+                </div>
+                <div id="function-example" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+
+int max(int a, int b) { return (a &gt; b) ? a : b; }
+
+int main() {
+    printf("So lon nhat: %d\n", max(100, 200));
+    return 0;
+}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>📊 Mảng (Arrays)</h3>
+                <p>Tập hợp các phần tử cùng kiểu dữ liệu được lưu trữ liên tiếp trong bộ nhớ.</p>
+                <div class="exercise-card" onclick="toggleContent('array-example')">
+                    <div class="exercise-title">🔍 Tìm Min/Max Trong Mảng</div>
+                    <p>Tìm phần tử lớn nhất và nhỏ nhất</p>
+                </div>
+                <div id="array-example" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int n; printf("Nhap so phan tu: "); scanf("%d", &n);
+    int a[n];
+    for (int i = 0; i &lt; n; i++) { printf("a[%d] = ", i); scanf("%d", &a[i]); }
+    int max = a[0], min = a[0];
+    for (int i = 1; i &lt; n; i++) { if (a[i] &gt; max) max = a[i]; if (a[i] &lt; min) min = a[i]; }
+    printf("Max: %d, Min: %d\n", max, min);
+    return 0;
+}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🏗️ Struct (Cấu Trúc)</h3>
+                <p>Kiểu dữ liệu do người dùng định nghĩa, chứa nhiều trường khác kiểu dữ liệu.</p>
+                <div class="exercise-card" onclick="toggleContent('struct-example')">
+                    <div class="exercise-title">👨‍🎓 Struct Sinh Viên</div>
+                    <p>Quản lý thông tin sinh viên</p>
+                </div>
+                <div id="struct-example" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+typedef struct {
+    char ma[10];
+    char hoten[50];
+    float toan, van;
+} SinhVien;
+
+int main() {
+    SinhVien sv;
+
+    printf("Nhap ma SV: ");
+    scanf("%9s", sv.ma);
+
+    getchar(); // clear '\n'
+    printf("Nhap ho ten: ");
+    fgets(sv.hoten, sizeof(sv.hoten), stdin);
+    int len = strlen(sv.hoten);
+    if (len &gt; 0 &amp;&amp; sv.hoten[len - 1] == '\n') sv.hoten[len - 1] = '\0';
+
+    printf("Nhap diem Toan va Van: ");
+    scanf("%f %f", &sv.toan, &sv.van);
+
+    float dtb = (sv.toan + sv.van) / 2.0f;
+    printf("SV: %s - %s - DTB: %.2f\n", sv.ma, sv.hoten, dtb);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🧩 Struct lồng nhau (Nested Struct)</h3>
+                <div class="code-block">
+                    <pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Date { int day, month, year; };
+struct Time { int hh, mm, ss; };
+struct Ticket {
+    struct Date xem; struct Time gio;
+    char tenphim[100]; double giave;
+};
+
+int main() {
+    struct Ticket v;
+
+    printf("Nhap ten phim: ");
+    fgets(v.tenphim, sizeof(v.tenphim), stdin);
+    int len = strlen(v.tenphim);
+    if (len &gt; 0 &amp;&amp; v.tenphim[len-1] == '\n') v.tenphim[len-1] = '\0';
+
+    printf("Nhap ngay xem (dd mm yyyy): ");
+    scanf("%d %d %d", &v.xem.day, &v.xem.month, &v.xem.year);
+
+    printf("Nhap gio xem (hh mm ss): ");
+    scanf("%d %d %d", &v.gio.hh, &v.gio.mm, &v.gio.ss);
+
+    printf("Nhap gia ve: ");
+    scanf("%lf", &v.giave);
+
+    printf("\n--- VE ---\n");
+    printf("Phim: %s\n", v.tenphim);
+    printf("Ngay: %02d/%02d/%04d\n", v.xem.day, v.xem.month, v.xem.year);
+    printf("Gio: %02d:%02d:%02d\n", v.gio.hh, v.gio.mm, v.gio.ss);
+    printf("Gia: %.2lf\n", v.giave);
+    return 0;
+}
+</pre>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🧮 Mảng 2 Chiều (Ma Trận)</h3>
+                <div class="exercise-card" onclick="toggleContent('matrix-input')">
+                    <div class="exercise-title">Nhập &amp; In Ma Trận n×m</div>
+                    <p>Nhập ma trận từ bàn phím và in ra theo dạng lưới</p>
+                </div>
+                <div id="matrix-input" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int n, m;
+    printf("Nhap so hang va cot: ");
+    scanf("%d %d", &n, &m);
+    int a[n][m];
+
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; m; j++) {
+            printf("a[%d][%d] = ", i, j);
+            scanf("%d", &a[i][j]);
+        }
+
+    printf("\nMa tran:\n");
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; m; j++) printf("%4d", a[i][j]);
+        printf("\n");
+    }
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('matrix-ops')">
+                    <div class="exercise-title">Tìm Max &amp; Tổng Trong Ma Trận</div>
+                    <p>Duyệt ma trận để lấy max và tổng</p>
+                </div>
+                <div id="matrix-ops" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int n, m; scanf("%d %d", &n, &m);
+    int a[n][m];
+    int maxv, sum = 0;
+
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; m; j++) {
+            scanf("%d", &a[i][j]);
+            if (i == 0 &amp;&amp; j == 0) maxv = a[i][j];
+            if (a[i][j] &gt; maxv) maxv = a[i][j];
+            sum += a[i][j];
+        }
+
+    printf("Max = %d\nTong = %d\n", maxv, sum);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🧷 Con trỏ (Pointers)</h3>
+                <div class="exercise-card" onclick="toggleContent('pointer-basics')">
+                    <div class="exercise-title">Khai báo con trỏ &amp; Toán tử * / &amp;</div>
+                    <p>In địa chỉ và giá trị qua con trỏ</p>
+                </div>
+                <div id="pointer-basics" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int a = 300; int *ptr = &amp;a;
+    printf("Dia chi a: %p\n", (void*)&a);
+    printf("Gia tri ptr: %p\n", (void*)ptr);
+    printf("Gia tri a: %d\n", a);
+    printf("Gia tri *ptr: %d\n", *ptr);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+                <div class="exercise-card" onclick="toggleContent('pass-ref')">
+                    <div class="exercise-title">Pass by Value vs Pass by Reference</div>
+                    <p>Sự khác nhau khi truyền tham trị và tham chiếu</p>
+                </div>
+                <div id="pass-ref" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+void tang_value(int x) { x = x + 5; }
+void tang_ref(int *x) { *x = *x + 5; }
+int main() {
+    int a = 10, b = 10;
+    tang_value(a);
+    tang_ref(&amp;b);
+    printf("a (value) = %d\n", a); // 10
+    printf("b (ref)   = %d\n", b); // 15
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bài tập -->
+        <div id="exercises" class="content-section">
+            <h2 class="section-title">
+                <div class="section-icon">💻</div>Bài Tập &amp; Thực Hành
+            </h2>
+            <div class="subsection">
+                <h3>🔰 Cơ bản</h3>
+                <div class="exercise-card" onclick="toggleContent('bt-rect-area')">
+                    <div class="exercise-title">Tính diện tích hình chữ nhật</div>
+                    <p>Nhập dài, rộng và in diện tích</p>
+                </div>
+                <div id="bt-rect-area" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    float dai, rong, S;
+    printf("Nhap chieu dai va chieu rong (cach nhau boi dau cach): ");
+    scanf("%f %f", &dai, &rong);
+
+    S = dai * rong;
+
+    printf("---- KET QUA ----\n");
+    printf("Chieu dai: %.2f\n", dai);
+    printf("Chieu rong: %.2f\n", rong);
+    printf("Dien tich: %.2f\n", S);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-c2f')">
+                    <div class="exercise-title">Đổi độ C sang độ F</div>
+                    <p>F = C * 9/5 + 32</p>
+                </div>
+                <div id="bt-c2f" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    float C, F;
+    printf("Nhap nhiet do C: ");
+    scanf("%f", &C);
+
+    F = C * 9.0f / 5.0f + 32.0f;
+
+    printf("---- KET QUA ----\n");
+    printf("Cong thuc: F = C * 9/5 + 32\n");
+    printf("C = %.2f\n", C);
+    printf("F = %.2f\n", F);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-age')">
+                    <div class="exercise-title">Tính tuổi từ năm sinh</div>
+                    <p>Giả sử năm hiện tại 2025</p>
+                </div>
+                <div id="bt-age" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int year, age;
+    const int CURRENT_YEAR = 2025;
+
+    printf("Nhap nam sinh: ");
+    scanf("%d", &year);
+
+    age = CURRENT_YEAR - year;
+
+    printf("---- KET QUA ----\n");
+    printf("Nam hien tai: %d\n", CURRENT_YEAR);
+    printf("Nam sinh: %d\n", year);
+    printf("Tuoi: %d\n", age);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>🧠 Điều kiện &amp; Vòng lặp</h3>
+                <div class="exercise-card" onclick="toggleContent('bt-leap')">
+                    <div class="exercise-title">Kiểm tra năm nhuận</div>
+                    <p>Chia hết 400 hoặc (chia hết 4 và không chia hết 100)</p>
+                </div>
+                <div id="bt-leap" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main(){ int n; scanf("%d",&n);
+    if (n%400==0 || (n%4==0 &amp;&amp; n%100!=0)) puts("Leap");
+    else puts("Not Leap");
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-sum1n')">
+                    <div class="exercise-title">Tổng 1..n (for)</div>
+                    <p>Cộng dồn với vòng lặp</p>
+                </div>
+                <div id="bt-sum1n" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main() {
+    int n, s = 0;
+
+    printf("Nhap n: ");
+    scanf("%d", &n);
+
+    for (int i = 1; i &lt;= n; i++) {
+        s += i;
+    }
+
+    printf("---- KET QUA ----\n");
+    printf("n = %d\n", n);
+    printf("Tong tu 1 den %d: %d\n", n, s);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>🧰 Mảng &amp; Chuỗi</h3>
+                <div class="exercise-card" onclick="toggleContent('bt-array-sum')">
+                    <div class="exercise-title">Tổng mảng số nguyên</div>
+                    <p>Nhập n và các phần tử, in tổng</p>
+                </div>
+                <div id="bt-array-sum" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main(){ int n,s=0; scanf("%d",&n); int a[n];
+    for(int i=0;i&lt;n;i++){ scanf("%d",&a[i]); s+=a[i]; }
+    printf("%d\n",s); return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-array-even')">
+                    <div class="exercise-title">Liệt kê phần tử chẵn</div>
+                    <p>In các phần tử chẵn trong mảng</p>
+                </div>
+                <div id="bt-array-even" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main(){ int n; scanf("%d",&n); int a[n];
+    for(int i=0;i&lt;n;i++) scanf("%d",&a[i]);
+    for(int i=0;i&lt;n;i++) if(a[i]%2==0) printf("%d ",a[i]);
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>🎮 Mini Game &amp; Máy tính</h3>
+                <div class="exercise-card" onclick="toggleContent('bt-calc-menu')">
+                    <div class="exercise-title">Máy tính Menu (switch-case)</div>
+                    <p>Cộng, trừ, nhân, chia với kiểm tra chia 0</p>
+                </div>
+                <div id="bt-calc-menu" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+int main(){ float a,b,kq; int chon;
+    scanf("%f%f",&a,&b);
+    printf("1.+ 2.- 3.* 4./\n"); scanf("%d",&chon);
+    switch(chon){
+        case 1:kq=a+b;break; case 2:kq=a-b;break;
+        case 3:kq=a*b;break; case 4: if(b==0){puts("Err"); return 0;} kq=a/b;break;
+        default: puts("Invalid"); return 0;
+    }
+    printf("= %.2f\n",kq); return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-guess')">
+                    <div class="exercise-title">Game đoán số 1..100</div>
+                    <p>Phản hồi lớn hơn/nhỏ hơn cho đến khi đúng</p>
+                </div>
+                <div id="bt-guess" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+int main(){ srand(time(0)); int secret=rand()%100+1, x, cnt=0;
+    do{ printf("Doan: "); scanf("%d",&x); cnt++;
+        if(x&lt;secret) puts("Nho hon"); else if(x&gt;secret) puts("Lon hon");
+    }while(x!=secret);
+    printf("Chinh xac sau %d lan!\n",cnt); return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-tictactoe')">
+                    <div class="exercise-title">Cờ Caro 3×3 (OX)</div>
+                    <p>Phiên bản console cơ bản</p>
+                </div>
+                <div id="bt-tictactoe" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+char b[3][3];
+void reset(){ for(int i=0;i&lt;3;i++) for(int j=0;j&lt;3;j++) b[i][j]=' '; }
+void print(){ puts(""); for(int i=0;i&lt;3;i++){ printf(" %c | %c | %c \n",b[i][0],b[i][1],b[i][2]); if(i&lt;2) puts("---|---|---"); } }
+char win(){
+    for(int i=0;i&lt;3;i++) if(b[i][0]!=' ' &amp;&amp; b[i][0]==b[i][1] &amp;&amp; b[i][1]==b[i][2]) return b[i][0];
+    for(int i=0;i&lt;3;i++) if(b[0][i]!=' ' &amp;&amp; b[0][i]==b[1][i] &amp;&amp; b[1][i]==b[2][i]) return b[0][i];
+    if(b[0][0]!=' ' &amp;&amp; b[0][0]==b[1][1] &amp;&amp; b[1][1]==b[2][2]) return b[0][0];
+    if(b[0][2]!=' ' &amp;&amp; b[0][2]==b[1][1] &amp;&amp; b[1][1]==b[2][0]) return b[0][2];
+    return ' ';
+}
+int draw(){ for(int i=0;i&lt;3;i++) for(int j=0;j&lt;3;j++) if(b[i][j]==' ') return 0; return 1; }
+int main(){ reset(); int r,c; char p='X', w=' ';
+    do{ print(); printf("Luot %c (0-2 0-2): ",p); scanf("%d%d",&r,&c);
+        if(r&lt;0||r&gt;2||c&lt;0||c&gt;2||b[r][c]!=' '){ puts("Khong hop le!"); continue; }
+        b[r][c]=p; w=win(); if(w!=' '||draw()) break; p=(p=='X')?'O':'X';
+    }while(1);
+    print(); if(w!=' ') printf("Thang: %c\n",w); else puts("Hoa!");
+    return 0;
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card" onclick="toggleContent('bt-word')">
+                    <div class="exercise-title">Game đoán chữ</div>
+                    <p>Đoán từng ký tự cho đến khi đủ từ</p>
+                </div>
+                <div id="bt-word" class="hidden">
+                    <div class="code-block">
+                        <pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+int main(){ char secret[]="laptop"; int L=strlen(secret), ok=0; char g[L];
+    for(int i=0;i&lt;L;i++) g[i]='_';
+    while(ok&lt;L){ printf("\nHien tai: "); for(int i=0;i&lt;L;i++) printf("%c ", g[i]);
+        printf("\nNhap 1 chu cai: "); int ch=getchar(); while(getchar()!='\n'); ch=tolower(ch);
+        int f=0; for(int i=0;i&lt;L;i++) if(secret[i]==ch &amp;&amp; g[i]=='_'){ g[i]=ch; ok++; f=1; }
+        puts(f?"Chinh xac!":"Khong co ky tu nay.");
+    }
+    printf("\nChuc mung! Tu: %s\n", secret); return 0;
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>📝 Đề kiểm tra (gợi ý)</h3>
+                <ul>
+                    <li><strong>1.</strong> Viết hàm <code>int tongMang(int *a, int n)</code> tính tổng mảng bằng con
+                        trỏ (không dùng <code>a[i]</code>).</li>
+                    <li><strong>2.</strong> Khai báo <code>struct SinhVien</code> (mã, họ tên, Toán, Văn), nhập và in
+                        điểm trung bình.</li>
+                    <li><strong>3.</strong> Dùng <code>struct</code> mô tả hình chữ nhật, viết hàm nhập và hàm tính diện
+                        tích qua con trỏ.</li>
+                    <li><strong>4.</strong> Quản lý tối đa 100 sinh viên (mảng struct), tìm SV có ĐTB cao nhất và in
+                        thông tin.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🚀 Sẵn sàng bắt đầu với C/Embedded?</h3>
+            <p>Thực hành mỗi ngày · Ghi chú lại lỗi thường gặp · Nâng dần độ khó bài tập</p>
+        </div>
+    </div>
+
+    <script>
+        const tabs = ["intro", "setup", "week1", "week2", "week3", "exercises"];
+        function showTab(id) {
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(id));
+            });
+            document.querySelectorAll('.content-section').forEach(s => {
+                s.classList.toggle('active', s.id === id);
+            });
+            const idx = tabs.indexOf(id);
+            const fill = document.getElementById('progressFill');
+            if (fill) fill.style.width = ((idx + 1) / tabs.length * 100).toFixed(0) + '%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function toggleContent(id) { const el = document.getElementById(id); if (!el) return; el.classList.toggle('hidden'); }
+        document.addEventListener('DOMContentLoaded', () => { showTab('intro'); setTimeout(() => { const fill = document.getElementById('progressFill'); if (fill) fill.style.width = '16%'; }, 300); });
+    </script>
+</body>
+
+</html>
